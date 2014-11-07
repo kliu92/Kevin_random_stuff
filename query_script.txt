@@ -1,0 +1,152 @@
+#------To copy file from host:
+
+scp -i ~/key6.pem  root@ec2-184-73-148-196.compute-1.amazonaws.com:/root/file_name Target_directory
+
+#------To copy file to host from local:
+
+scp -i ~/key6.pem Local_file root@ec2-184-73-148-196.compute-1.amazonaws.com:/root/Target_Directory/file_name
+
+---------------------------------------------------------------------------
+MySQL
+
+set @pub_id = 9018018 /*bettercloud*/;
+set @list_name = 'Salesforce Leads';
+
+select *
+from import_job as a
+join publishers as b on (a.publisher_id = b.id)
+join import_lists as c on (a.list_id = c.import_list_id)
+where b.id = @pub_id and c.import_list_name = @list_name
+order by a.completed_at desc;
+
+select *
+from channel_auth as a
+join channel as b on (a.channel_id = b.channel_id)
+join publishers as c on (b.publisher_id = c.id)
+where c.id = @pub_id;
+
+select *
+from import_lists as a
+join publishers as b on (a.publisher_id = b.id)
+where b.id = @pub_id;
+
+select *
+from publishers as a
+where a.id = @pub_id;
+
+
+---------------------------------------------------------------------------
+Mongodb
+
+use fliptop
+
+db.leads.find().sort( { "item.category": 1, "item.type": 1 } ).limit(50)
+#------"category" is a subdocument of the the field "item"
+#------Limits the returned list to 50 items
+#------Use db.[list_name].findOne() to return one item from the list
+
+
+db.leads.find({
+    'lis' : 911556,
+    'status': {$in : ['Closed', 'Demo Scheduled', 'Converted']},
+    'cre' : {$gt : ISODate('2014-08-01 00:00:00.000Z')}
+})
+
+
+db.runCommand({
+    count: 'leads',
+    query: {'lis': 910873}
+    })
+or
+db.leads.find({
+...........
+}).count
+
+
+db.opportunities.find({
+    'own': {$in: [9018017, 9017943, 9017610, 9017958, 9017968, 9017969, 9017970, 9017971, 9017972, 9017978, 9017938, 9018008, 9017980, 9018006, 9017976]}
+    'won': true
+}).count()
+
+
+db.leads.update({----query----},
+    {$set/$unset:{----fields_to_update----}},
+    {upsert:true/false},
+    {multi:true/false})
+
+#------Use to query by rec field (case insensitive)
+db.opportunities.find({
+    'lis':911336
+    'rec': /^006d000000a0jaaiau$/i
+})
+
+
+#------To iterate through a collection (much quicker and more efficent than using $in or $nin)
+1) mongoimport the recs into a new collection (let's say you call it kevin_exp_at).
+
+2) Run the following in the shell:
+db.kevin_exp_at.find().forEach(function(doc){
+	db.leads.update({"lis":911723,"rec":doc.rec}, {"$set":{"exp_at":ISODate('2014-01-01 00:00:00.000Z')}}, false, true);
+});
+
+
+#------In terminal to run mongoexport
+mongoexport --db fliptop --collection leads --csv --fieldFile fields2.txt --out /leads_id_status.cs -q #query
+
+----------------------------------------------------------------------------
+Soql queries
+
+#------Channel Authorization for SalesForce
+#------username is username
+#------password is password+token
+#------site url is http://end_point.salesforce.com
+#------username, password, token, end_point are fields of the MySQL query
+
+#========================
+#------Mysql
+
+select *
+from channel_auth as a
+join channel as b on (a.channel_id=b.channel_id)
+join publishers as c on (b.publisher_id=c.id)
+where c.email like '%kony%'
+#========================
+
+select Amount, CloseDate 
+from Opportunity 
+where IsClosed=true and IsWon=true
+
+#------Total amount of closed since given date
+select SUM(Amount)
+from Opportunity
+where IsClosed = true and IsWon=true and CALENDAR_YEAR(CloseDate) >= 2014 and CALENDAR_MONTH(CloseDate) >= 04 and DAY_IN_MONTH(CloseDate) >= 21
+
+---------------------------------------------------------------------------
+
+#------Other stuff
+
+#------To run jar file -
+java -jar fliptop-data-science-1.1.1-SNAPSHOT-jar-with-dependencies.jar 911556 true 2014-08-20 false 0.00 1
+
+"Required Arguments: <listId: Int> <isLeadList: Boolean> <startDate: yyyy-MM-dd> <hashIt: Boolean> <sparseRatio: Double> <modelId: Int>"
+
+---------------------
+
+#------To pull feature importance
+1) Get desired model name from MySQL
+
+select spendscore_job_id, ml_algorithm, model_version
+from spendscore_job
+where publisher_id=9018021
+
+2) cURL the signal contribution API using the appropriate publisher id and model version:
+
+curl http://prod-load-balancer-ml-servers-1112179997.us-east-1.elb.amazonaws.com:9527/signal-contribution/9018021/_1126_2014-10-09.08:41:50_RF3CL.clf
+
+3) Map the values to field names using MySQL
+
+select *
+from spend_score_training_headers
+where spendscore_job_id=1126
+
+
