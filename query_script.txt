@@ -91,7 +91,7 @@ db.kevin_exp_at.find().forEach(function(doc){
 
 
 #------In terminal to run mongoexport
-mongoexport --db fliptop --collection leads --csv --fieldFile fields2.txt --out /leads_id_status.cs -q #query
+mongoexport --db fliptop --collection leads --csv --fieldFile fields2.txt --out /leads_id_status.csv -q #query
 
 ----------------------------------------------------------------------------
 Soql queries
@@ -149,4 +149,15 @@ select *
 from spend_score_training_headers
 where spendscore_job_id=1126
 
-
+Model_Mapping:
+{
+    100100:'ExplicitlyRFRCompany',
+    100011:'ExplicitlyGBCompany',
+    100002:'ExplicitlyRF3CLCompany',
+    100001:'ExplicitlyRFCompany',
+    100:'ExplicitlyRFR',
+    11:'ExplicitlyGB',
+    2:'ExplicitlyRF3CL',
+    1:'ExplicitlyRF',
+    0:'Implicitly'
+}
