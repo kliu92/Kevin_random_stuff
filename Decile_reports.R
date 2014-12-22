@@ -42,8 +42,8 @@ leads_decile_partition <- function(df){
                          c(sum_1,agg_sum2,agg_sum3,agg_sum4,agg_sum5,agg_sum6,agg_sum7,agg_sum8,agg_sum9,agg_sum10),
                          c(sum_1/agg_sum10, agg_sum2/agg_sum10, agg_sum3/agg_sum10, agg_sum4/agg_sum10, agg_sum5/agg_sum10,
                            agg_sum6/agg_sum10, agg_sum7/agg_sum10, agg_sum8/agg_sum10, agg_sum9/agg_sum10, agg_sum10/agg_sum10))
-  colnames(decile_df) = c('Decile','Num_in_decile','Num_leads_created', 'Cumulative_convert', 'Cumulative_convert_percent')
-  decile_df$Conversion_Percent = (decile_df$Num_leads_created/decile_df$Num_in_decile)*100
+  colnames(decile_df) = c('Decile','Num_in_decile','Num_leads_converted', 'Cumulative_convert', 'Cumulative_convert_percent')
+  decile_df$Conversion_Percent = (decile_df$Num_leads_converted/decile_df$Num_in_decile)*100
   decile_df$Cumulative_convert_percent = decile_df$Cumulative_convert_percent*100
   decile_df$Decile = factor(decile_df$Decile, c('Top 10%','2nd 10%','3rd 10%','4th 10%','5th 10%','6th 10%','7th 10%','8th 10%','9th 10%','Bottom 10%'))
   decile_df$Decile_cumulative = c(10,20,30,40,50,60,70,80,90,100)
@@ -121,8 +121,8 @@ leads_decile_partition2 <- function(df){
                          c(sum_1,agg_sum2,agg_sum3,agg_sum4,agg_sum5,agg_sum6,agg_sum7,agg_sum8,agg_sum9,agg_sum10),
                          c(sum_1/agg_sum10, agg_sum2/agg_sum10, agg_sum3/agg_sum10, agg_sum4/agg_sum10, agg_sum5/agg_sum10,
                            agg_sum6/agg_sum10, agg_sum7/agg_sum10, agg_sum8/agg_sum10, agg_sum9/agg_sum10, agg_sum10/agg_sum10))
-  colnames(decile_df) = c('Decile','Num_in_decile','Num_leads_created', 'Cumulative_convert', 'Cumulative_convert_percent')
-  decile_df$Conversion_Percent = (decile_df$Num_leads_created/decile_df$Num_in_decile)*100
+  colnames(decile_df) = c('Decile','Num_in_decile','Num_leads_converted', 'Cumulative_convert', 'Cumulative_convert_percent')
+  decile_df$Conversion_Percent = (decile_df$Num_leads_converted/decile_df$Num_in_decile)*100
   decile_df$Cumulative_convert_percent = decile_df$Cumulative_convert_percent*100
   decile_df$Decile = factor(decile_df$Decile, c('Top 10%','2nd 10%','3rd 10%','4th 10%','5th 10%','6th 10%','7th 10%','8th 10%','9th 10%','Bottom 10%'))
   decile_df$Agg_axis = c('10%','20%','30%','40%','50%','60%','70%','80%','90%','100%')
@@ -135,11 +135,11 @@ leads_decile_partition2 <- function(df){
     ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.0025),size=4)+scale_y_continuous(breaks=c(0,0.05,0.1,2.5,5,10,20,30,40,50,60,70,80,90,100), limits=c(0,0.1))  
   } else if (max_height <= 5){
     ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,2.5,5,10,20,30,40,50,60,70,80,90,100), limits=c(0,5))  
-  } else if (max_height <= 7.5){
-    ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,2.5,5,7.5,10,20,30,40,50,60,70,80,90,100), limits=c(0,7.5))  
+  } else if (max_height <= 10){
+    ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.15),size=4)+scale_y_continuous(breaks=c(0,2.5,5,7.5,10,20,30,40,50,60,70,80,90,100), limits=c(0,10))  
   } else if (max_height <= 25){   
     #num_height = 0.25
-    ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.25),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,25))  
+    ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.25),size=4)+scale_y_continuous(breaks=c(0,5,10,15,20,25,30,40,50,60,70,80,90,100), limits=c(0,25))  
   } else if (max_height <= 40){
     #num_height = 0.5
     ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.5),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,50))  
@@ -151,7 +151,7 @@ leads_decile_partition2 <- function(df){
     ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+1.25),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))  
   }
   
-  #ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.5),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,30))
+  ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.25),size=4)+scale_y_continuous(breaks=c(0,2.5,5,7.5,10,15,20,30,40,50,60,70,80,90,100), limits=c(0,12))
   agg_plot = ggplot(decile_df, aes(x=Decile_cumulative, y=Cumulative_convert_percent))+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_x_continuous(breaks=c(10,20,30,40,50,60,70,80,90,100))+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Fliptop - Percentage of Converted Leads', x='Percentage of Stack-ranked Leads (Cumulative)', y='Percentage of Aggregate Leads')+geom_text(aes(label=paste(sprintf('%.2f%%',Cumulative_convert_percent)), y=Cumulative_convert_percent-3), size=3)
   agg_plot = ggplot(decile_df, aes(x=Agg_axis, y=Cumulative_convert_percent, group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Fliptop - Percentage of Converted Leads', x='Percentage of Stack-ranked Leads (Cumulative)', y='Percentage of Aggregate Leads')+geom_text(aes(label=paste(sprintf('%.2f%%',Cumulative_convert_percent)), y=Cumulative_convert_percent-3), size=3)
   grid.arrange(ftop_conv_graph)
@@ -310,8 +310,8 @@ infer_leads_decile_partition <- function(df){
                          c(sum_1,agg_sum2,agg_sum3,agg_sum4,agg_sum5,agg_sum6,agg_sum7,agg_sum8,agg_sum9,agg_sum10),
                          c(sum_1/agg_sum10, agg_sum2/agg_sum10, agg_sum3/agg_sum10, agg_sum4/agg_sum10, agg_sum5/agg_sum10,
                            agg_sum6/agg_sum10, agg_sum7/agg_sum10, agg_sum8/agg_sum10, agg_sum9/agg_sum10, agg_sum10/agg_sum10))
-  colnames(decile_df) = c('Decile','Num_in_decile','Num_leads_created', 'Cumulative_convert', 'Cumulative_convert_percent')
-  decile_df$Conversion_Percent = (decile_df$Num_leads_created/decile_df$Num_in_decile)*100
+  colnames(decile_df) = c('Decile','Num_in_decile','Num_leads_converted', 'Cumulative_convert', 'Cumulative_convert_percent')
+  decile_df$Conversion_Percent = (decile_df$Num_leads_converted/decile_df$Num_in_decile)*100
   decile_df$Cumulative_convert_percent = decile_df$Cumulative_convert_percent*100
   decile_df$Decile = factor(decile_df$Decile, c('Top 10%','2nd 10%','3rd 10%','4th 10%','5th 10%','6th 10%','7th 10%','8th 10%','9th 10%','Bottom 10%'))
   decile_df$Agg_axis = c('10%','20%','30%','40%','50%','60%','70%','80%','90%','100%')
@@ -339,12 +339,13 @@ infer_leads_decile_partition <- function(df){
     ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= 'Infer - Lead Conversion Rates', x='Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+1.25),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))
   }
   
-  ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= 'Infer: Lead Conversion Rates', x='Decile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.5),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,30))
+  ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= 'Infer - Lead Conversion Rates', x='Decile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.5),size=4)+scale_y_continuous(breaks=c(0,2.5,5,7.5,10,15,20,30,40,50,60,70,80,90,100), limits=c(0,12))
   #agg_plot = ggplot(decile_df, aes(x=Decile_cumulative, y=Cumulative_convert_percent))+geom_line(size=1.25, color='lemonchiffon3')+geom_point(colour='black', size=3)+scale_x_continuous(breaks=c(10,20,30,40,50,60,70,80,90,100))+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Infer - Percentage of Converted Leads', x='Percentage of Stack-ranked Leads (Cumulative)', y='Percentage of Aggregate Leads')+geom_text(aes(label=paste(sprintf('%.2f%%',Cumulative_convert_percent)), y=Cumulative_convert_percent-3), size=3)
   agg_plot = ggplot(decile_df, aes(x=Agg_axis, y=Cumulative_convert_percent, group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='lemonchiffon3')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Infer - Percentage of Converted Leads', x='Percentage of Stack-ranked Leads (Cumulative)', y='Percentage of Aggregate Leads')+geom_text(aes(label=paste(sprintf('%.2f%%',Cumulative_convert_percent)), y=Cumulative_convert_percent-3), size=3)
   grid.arrange(ftop_conv_graph)
   grid.arrange(agg_plot)
   decile_df$Decile_cumulative = NULL
+  decile_df$Agg_axis = NULL
   print(decile_df)
 }
 
@@ -389,8 +390,8 @@ lattice_leads_decile_partition <- function(df){
                          c(sum_1,agg_sum2,agg_sum3,agg_sum4,agg_sum5,agg_sum6,agg_sum7,agg_sum8,agg_sum9,agg_sum10),
                          c(sum_1/agg_sum10, agg_sum2/agg_sum10, agg_sum3/agg_sum10, agg_sum4/agg_sum10, agg_sum5/agg_sum10,
                            agg_sum6/agg_sum10, agg_sum7/agg_sum10, agg_sum8/agg_sum10, agg_sum9/agg_sum10, agg_sum10/agg_sum10))
-  colnames(decile_df) = c('Decile','Num_in_decile','Num_leads_created', 'Cumulative_convert', 'Cumulative_convert_percent')
-  decile_df$Conversion_Percent = (decile_df$Num_leads_created/decile_df$Num_in_decile)*100
+  colnames(decile_df) = c('Decile','Num_in_decile','Num_leads_converted', 'Cumulative_convert', 'Cumulative_convert_percent')
+  decile_df$Conversion_Percent = (decile_df$Num_leads_converted/decile_df$Num_in_decile)*100
   decile_df$Cumulative_convert_percent = decile_df$Cumulative_convert_percent*100
   decile_df$Decile = factor(decile_df$Decile, c('Top 10%','2nd 10%','3rd 10%','4th 10%','5th 10%','6th 10%','7th 10%','8th 10%','9th 10%','Bottom 10%'))
   decile_df$Agg_axis = c('10%','20%','30%','40%','50%','60%','70%','80%','90%','100%')
@@ -422,6 +423,7 @@ lattice_leads_decile_partition <- function(df){
   grid.arrange(ftop_conv_graph)
   grid.arrange(agg_plot)
   decile_df$Decile_cumulative = NULL
+  decile_df$Agg_axis = NULL
   print(decile_df)
 }
 
@@ -445,8 +447,8 @@ quartile_leads_partition <- function(df){
                          c(sum_1,sum_2,sum_3,sum_4),
                          c(sum_1,agg_sum2,agg_sum3,agg_sum4),
                          c(sum_1/agg_sum4, agg_sum2/agg_sum4, agg_sum3/agg_sum4, agg_sum4/agg_sum4))
-  colnames(quartile_df) = c('Quartile','Num_in_quartile','Num_leads_created', 'Cumulative_convert', 'Cumulative_convert_percent')
-  quartile_df$Conversion_Percent = (quartile_df$Num_leads_created/quartile_df$Num_in_quartile)*100
+  colnames(quartile_df) = c('Quartile','Num_in_quartile','Num_leads_converted', 'Cumulative_convert', 'Cumulative_convert_percent')
+  quartile_df$Conversion_Percent = (quartile_df$Num_leads_converted/quartile_df$Num_in_quartile)*100
   quartile_df$Cumulative_convert_percent = quartile_df$Cumulative_convert_percent*100
   quartile_df$Quartile = factor(quartile_df$Quartile, c('Top 25%','2nd 25%','3rd 25%','Bottom 25%'))
   quartile_df$Agg_axis = c('25%','50%','75%','100%')
@@ -504,7 +506,8 @@ opps_decile_partition(opps_11)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
 smarsh_new = read.csv('/Users/fliptop/Desktop/Customer_Stats/Smarsh/Smarsh_leads_new.csv', stringsAsFactor=F, header=T)
-smarsh_leads = read.csv('/Users/fliptop/Desktop/Customer_Stats/Smarsh/Smarsh_leads.csv', stringsAsFactor=F, header=T)
+smarsh_leads_1 = read.csv('/Users/fliptop/Desktop/Customer_Stats/Smarsh/smarsh_leads.csv', stringsAsFactor=F, header=T)
+smarsh_sfdc = read.csv('/Users/fliptop/Desktop/Customer_Stats/Smarsh/smarsh_sfdc_leads.csv', stringsAsFactor=F, header=T)
 lattice <- read.csv('/Users/fliptop/Desktop/Customer_Stats/Smarsh/Lattice_leads.csv', stringsAsFactor=F)
 lattice_new <- read.csv('/Users/fliptop/Desktop/Customer_Stats/Smarsh/Lattice_leads_new.csv', stringsAsFactor=F, header=T)
 lattice$IsConverted = replace(lattice$IsConverted, lattice$IsConverted == 'true', 'True')
@@ -520,10 +523,13 @@ smarsh_new_2 = smarsh_new[order(-smarsh_new$ssv3.2.sco, -smarsh_new$ssv3.2.rscos
 
 smarsh_leads = merge(smarsh_leads, lattice, by.x ='rec', by.y='Id')
 
+smarsh_leads = merge(smarsh_leads_1, smarsh_sfdc, by.x='rec', by.y='Id')
+smarsh_leads$IsConverted = replace(smarsh_leads$IsConverted, smarsh_leads$IsConverted == 'true', 'True')
+
 smarsh_leads$isCon = replace(smarsh_leads$isCon, smarsh_leads$isCon == 'true', 'True')
 smarsh_leads_1 = smarsh_leads[order(-smarsh_leads$ssv3.1.rscos.1), ]
 smarsh_leads_11 = smarsh_leads[order(-smarsh_leads$ssv3.11.rscos.1), ]
-smarsh_leads_2 = smarsh_leads[order(-smarsh_leads$ssv3.2.sco, -smarsh_leads$ssv3.2.rscos.2), ]
+smarsh_leads_2 = smarsh_leads[order(-smarsh_leads$ssv3.2.sco, -smarsh_leads$ssv3.2.rscos.2, -smarsh_leads$ssv3.2.rscos.1), ]
 
 lattice_leads = smarsh_leads[order(-smarsh_leads$Lattice_Score__c),]
 
@@ -567,25 +573,31 @@ kiss_infer_sort = kiss_leads[order(-kiss_leads$infer2__Infer_Score__c), ]
 leads_decile_partition2(kiss_new_leads_2)
 infer_leads_decile_partition(kiss_new_infer)
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-elastic_new = read.csv('/Users/fliptop/Desktop/Customer_Stats/ElasticSearch/elastic_leads_new.csv', stringsAsFactor=F, header=T)
+#elastic_new = read.csv('/Users/fliptop/Desktop/Customer_Stats/ElasticSearch/elastic_leads_new.csv', stringsAsFactor=F, header=T)
 elastic_leads = read.csv('/Users/fliptop/Desktop/Customer_Stats/ElasticSearch/elastic_leads.csv', stringsAsFactor=F, header=T)
 elastic_infer = read.csv('/Users/fliptop/Desktop/Customer_Stats/ElasticSearch/infer_scores.csv', stringsAsFactor=F, header=T)
 elastic_infer_new = read.csv('/Users/fliptop/Desktop/Customer_Stats/ElasticSearch/infer_scores_new.csv', stringsAsFactor=F, header=T)
 
 elastic_merged = merge(elastic_leads, elastic_infer, by.x='rec', by.y='Id')
-elastic_merged_new = merge(elastic_new, elastic_infer_new, by.x='rec', by.y='Id')
+elastic_merged_new = merge(elastic_leads, elastic_infer_new, by.x='rec', by.y='Id')
 
 elastic_merged$isCon = replace(elastic_merged$isCon, elastic_merged$isCon == 'true', 'True')
 elastic_merged$IsConverted = replace(elastic_merged$IsConverted, elastic_merged$IsConverted == 'true', 'True')
-elastic_merged_1 = elastic_merged[order(-elastic_merged$ssv3.1.rscos.1), ]
-elastic_merged_11 = elastic_merged[order(-elastic_merged$ssv3.11.rscos.1), ]
+#elastic_merged_1 = elastic_merged[order(-elastic_merged$ssv3.1.rscos.1), ]
+#elastic_merged_11 = elastic_merged[order(-elastic_merged$ssv3.11.rscos.1), ]
 elastic_merged_2 = elastic_merged[order(-elastic_merged$ssv3.2.sco, -elastic_merged$ssv3.2.rscos.1), ]
 elastic_merged_infer = elastic_merged[order(-elastic_merged$infer2__Infer_Score__c), ]
 
-elastic_merged_new_1 = elastic_merged_new[order(-elastic_merged_new$ssv3.1.rscos.1), ]
-elastic_merged_new_11 = elastic_merged_new[order(-elastic_merged_new$ssv3.11.rscos.1), ]
+#elastic_merged_new_1 = elastic_merged_new[order(-elastic_merged_new$ssv3.1.rscos.1), ]
+#elastic_merged_new_11 = elastic_merged_new[order(-elastic_merged_new$ssv3.11.rscos.1), ]
 elastic_merged_new_2 = elastic_merged_new[order(-elastic_merged_new$ssv3.2.sco, -elastic_merged_new$ssv3.2.rscos.2, -elastic_merged_new$ssv3.2.rscos.1), ]
 elastic_merged_infer_new = elastic_merged_new[order(-elastic_merged_new$infer2__Infer_Score__c), ]
+
+elastic_merged$combine1_2 = elastic_merged$ssv3.2.rscos.2+elastic_merged$ssv3.2.rscos.1
+elastic_merged_combined = elastic_merged[order(-elastic_merged$combine1_2), ]
+
+elastic_merged_new$combine1_2 = elastic_merged_new$ssv3.2.rscos.2+elastic_merged_new$ssv3.2.rscos.1
+elastic_merged_combined_new = elastic_merged_new[order(-elastic_merged_new$combine1_2), ]
 
 leads_decile_partition(elastic_merged_1)
 leads_decile_partition(elastic_merged_11)
@@ -594,6 +606,12 @@ leads_decile_partition(elastic_merged_2)
 leads_decile_partition(elastic_merged_new_1)
 leads_decile_partition(elastic_merged_new_11)
 leads_decile_partition(elastic_merged_new_2)
+
+
+elastic_leads_excluded = read.csv('/Users/fliptop/Desktop/Customer_Stats/ElasticSearch/leads_excluded.csv', header=T, stringsAsFactor=F)
+elastic_leads_excluded$isCon = replace(elastic_leads_excluded$isCon, elastic_leads_excluded$isCon == 'true', 'True')
+
+
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 jama = read.csv('/Users/fliptop/Desktop/Customer_Stats/jama_leads.csv', stringsAsFactor=F, header=T)
@@ -640,10 +658,10 @@ reliant_opps_11 = reliant_opps[order(-reliant_opps$ssv3.100011.sco, -reliant_opp
 #data = reliant_new_1
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 gainsight_leads = read.csv('/Users/fliptop/Desktop/Customer_Stats/Gainsight/gainsight_leads.csv', header=T, stringsAsFactor=F)  
-gainsight_opps = read.csv('/Users/fliptop/Desktop/Customer_Stats/Gainsight/gainsight_closed_opps.csv', header=T, stringsAsFactor=F)  
+gainsight_opps_closed = read.csv('/Users/fliptop/Desktop/Customer_Stats/Gainsight/gainsight_closed_opps.csv', header=T, stringsAsFactor=F)  
 gainsight_leads_new = read.csv('/Users/fliptop/Desktop/Customer_Stats/Gainsight/gainsight_leads_new.csv', header=T, stringsAsFactor=F)
-gainsight_opps_new = read.csv('/Users/fliptop/Desktop/Customer_Stats/Gainsight/gainsight_closed_opps_new.csv', header=T, stringsAsFactor=F)
-gainsight_opps_new = read.csv('/Users/fliptop/Desktop/Customer_Stats/Gainsight/gainsight_opps.csv', header=T, stringsAsFactor=F)
+gainsight_opps_closed_new = read.csv('/Users/fliptop/Desktop/Customer_Stats/Gainsight/gainsight_closed_opps_new.csv', header=T, stringsAsFactor=F)
+gainsight_opps_new = read.csv('/Users/fliptop/Desktop/Customer_Stats/Gainsight/gainsight_opps_new.csv', header=T, stringsAsFactor=F)
 
 gainsight_account = read.csv('/Users/fliptop/Desktop/Customer_Stats/Gainsight/gainsight_accounts.csv', header=T, stringsAsFactor=F)
 gainsight_opps = read.csv('/Users/fliptop/Desktop/Customer_Stats/Gainsight/gainsight_opps.csv', header=T, stringsAsFactor=F)
@@ -724,8 +742,8 @@ decile_df = data.frame(c('Top 10%','2nd 10%','3rd 10%','4th 10%','5th 10%','6th 
                          agg_sum6/agg_sum10, agg_sum7/agg_sum10, agg_sum8/agg_sum10, agg_sum9/agg_sum10, agg_sum10/agg_sum10),
                        c(response_1,response_2,response_3,response_4,response_5,response_6,response_7,response_8,response_9,response_10),
                        c(activated_1,activated_2,activated_3,activated_4,activated_5,activated_6,activated_7,activated_8,activated_9,activated_10))
-colnames(decile_df) = c('Decile','Num_in_decile','Num_leads_created', 'Cumulative_convert', 'Cumulative_convert_percent','Response_num', 'Activated_num')
-decile_df$Conversion_Percent = (decile_df$Num_leads_created/decile_df$Num_in_decile)*100
+colnames(decile_df) = c('Decile','Num_in_decile','Num_leads_converted', 'Cumulative_convert', 'Cumulative_convert_percent','Response_num', 'Activated_num')
+decile_df$Conversion_Percent = (decile_df$Num_leads_converted/decile_df$Num_in_decile)*100
 decile_df$Cumulative_convert_percent = decile_df$Cumulative_convert_percent*100
 decile_df$Response_percent = (decile_df$Response_num/decile_df$Num_in_decile)*100
 decile_df$Activated_percent = (decile_df$Activated_num/decile_df$Num_in_decile)*100
@@ -765,17 +783,27 @@ print(decile_df)
 leads = smarsh_leads_2
 leads = kiss_new_leads_2
 leads2 = kiss_new_infer
+elastic_infer = read.csv('/Users/fliptop/Desktop/Customer_Stats/ElasticSearch/SFDC_scores.csv', header=T, stringsAsFactor=F)
+elastic_infer = elastic_infer[order(-elastic_infer$infer2__Infer_Score__c), ]
+elastic_ftop = elastic_infer[complete.cases(elastic_infer$Ftop__SpendScore__c), ]
+elastic_infer$IsConverted = replace(elastic_infer$IsConverted, elastic_infer$IsConverted == 'true', 'True')
+elastic_leads = read.csv('/Users/fliptop/Desktop/Customer_Stats/ElasticSearch/elastic_leads.csv', header=T, stringsAsFactor=F)
+
+
+elastic_merged = merge(elastic_leads, elastic_sfdc, by.x='rec', by.y='Id')
+elastic_merged$isCon = replace(elastic_sfdc$isCon, elastic_sfdc$isCon == 'true', 'True')
+
 
 grade_bucket_conversions <- function(df){
-  #grade_A = subset(df, ssv3.11.sco <= 10 & ssv3.11.sco >= 7)
-  #grade_B = subset(df, ssv3.11.sco <= 6 & ssv3.11.sco >= 5)
-  #grade_C = subset(df, ssv3.11.sco <= 4 & ssv3.11.sco >= 3)
-  #grade_D = subset(df, ssv3.11.sco <= 2 & ssv3.11.sco >= 1)
+  grade_A = subset(df, ssv3.2.sco <= 10 & ssv3.2.sco >= 10)
+  grade_B = subset(df, ssv3.2.sco <= 9 & ssv3.2.sco >= 8)
+  grade_C = subset(df, ssv3.2.sco <= 7 & ssv3.2.sco >= 2)
+  grade_D = subset(df, ssv3.2.sco <= 1 & ssv3.2.sco >= 1)
   
-  grade_A = df[0:187, ]
-  grade_B = df[188:1168, ]
-  grade_C = df[1169:2479, ]
-  grade_D = df[2480:5837, ]
+  #grade_A = df[0:187, ]
+  #grade_B = df[188:1168, ]
+  #grade_C = df[1169:2479, ]
+  #grade_D = df[2480:5837, ]
 
   range_A = paste(min(grade_A$ssv3.2.sco), ',', max(grade_A$ssv3.2.sco))
   range_B = paste(min(grade_B$ssv3.2.sco), ',', max(grade_B$ssv3.2.sco))
@@ -803,10 +831,10 @@ grade_bucket_conversions <- function(df){
   agg_C = (c_A+c_B+c_C)/total_conv
   agg_D = (c_A+c_B+c_C+c_D)/total_conv
   
-  agg_A_cr = agg_A/total_conv
-  agg_B_cr = agg_B/total_conv
-  agg_C_cr = agg_C/total_conv
-  agg_D_cr = agg_D/total_conv
+  agg_bucket_A = c_A/total_conv
+  agg_bucket_B = c_B/total_conv
+  agg_bucket_C = c_C/total_conv
+  agg_bucket_D = c_D/total_conv
   
   bucket_conversion = data.frame(c('A','B','C','D'),
                                  c(range_A, range_B, range_C, range_D),
@@ -814,10 +842,11 @@ grade_bucket_conversions <- function(df){
                                  c(c_A,c_B,c_C,c_D),
                                  c(cr_A,cr_B,cr_C,cr_D),
                                  c(agg_A,agg_B,agg_C,agg_D),
-                                 c(agg_A_cr,agg_B_cr,agg_C_cr,agg_D_cr))
-  colnames(bucket_conversion) <- c('Grade_Bucket', 'Score_range', 'Num_in_bucket', 'Converted', 'Conversion_Rate', 'Agg_Converted','Agg_CR')
+                                 c(agg_bucket_A,agg_bucket_B,agg_bucket_C,agg_bucket_D))
+  colnames(bucket_conversion) <- c('Grade_Bucket', 'Score_range', 'Num_in_bucket', 'Converted', 'Conversion_Rate', 'Agg_Converted','Bucket_agg_converted')
   bucket_conversion$Conversion_Rate = bucket_conversion$Conversion_Rate*100
-  bucket_conversion$Agg_CR = bucket_conversion$Agg_CR*100
+  bucket_conversion$Agg_Converted = bucket_conversion$Agg_Converted*100
+  bucket_conversion$Bucket_agg_converted = bucket_conversion$Bucket_agg_converted*100
   bucket_conversion$Grade_Bucket_levels <- levels(bucket_conversion$Grade_Bucket)
   
   max_height = max(bucket_conversion$Conversion_Rate)
@@ -833,18 +862,106 @@ grade_bucket_conversions <- function(df){
     ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+1.25),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))
   }
   
-  #ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+.5),size=4)+scale_y_continuous(breaks=c(0,5,10,20,30,40,50,60,70,80,90,100), limits=c(0,15))
-  agg_plot = ggplot(bucket_conversion, aes(x=Grade_Bucket_levels, y=Agg_CR,group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Fliptop - Percentage of Converted Leads', x='Percentage of Stack-ranked Leads (Cumulative)', y='Percentage of Aggregate Leads')+geom_text(aes(label=paste(sprintf('%.2f%%',Agg_CR)), y=Agg_CR-3), size=3)
+  ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+0.1),size=4)+scale_y_continuous(breaks=c(0,0.5,1,1.5,2,10,20,30,40,50,60,70,80,90,100), limits=c(0,2))
+  agg_plot = ggplot(bucket_conversion, aes(x=Grade_Bucket_levels, y=Agg_Converted,group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Fliptop - Percentage of Converted Leads', x='Percentage of Stack-ranked Leads (Cumulative)', y='Percentage of Aggregate Leads')+geom_text(aes(label=paste(sprintf('%.2f%%',Agg_Converted)), y=Agg_Converted-3), size=3)
+  bucket_conversion$positions = cumsum(bucket_conversion$Bucket_agg_converted) - bucket_conversion$Bucket_agg_converted/2
+  #agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_converted, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+scale_y_continuous(breaks=y.breaks, labels=sprintf('%.2f%%', bucket_conversion$Bucket_agg_converted))+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
+  agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_converted, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+geom_text(aes(label=paste(sprintf('%.2f%%', Bucket_agg_converted)),y=positions))+scale_y_continuous(breaks=c())+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
+  
   bucket_conversion$Grade_Bucket_levels <- NULL
   print(bucket_conversion)
   grid.arrange(ftop_bucket_graph)
   grid.arrange(agg_plot)
+  grid.arrange(agg_pie_chart)
 }
 
+grade_bucket_conversions_1 <- function(df){
+  grade_A = subset(df, ssv3.2.sco <= 10 & ssv3.2.sco >= 10)
+  grade_B = subset(df, ssv3.2.sco <= 9 & ssv3.2.sco >= 8)
+  grade_C = subset(df, ssv3.2.sco <= 7 & ssv3.2.sco >= 5)
+  grade_D = subset(df, ssv3.2.sco <= 2 & ssv3.2.sco >= 1)
+  
+  #grade_A = df[0:187, ]
+  #grade_B = df[188:1168, ]
+  #grade_C = df[1169:2479, ]
+  #grade_D = df[2480:5837, ]
+  
+  range_A = paste(min(grade_A$ssv3.2.sco), ',', max(grade_A$ssv3.2.sco))
+  range_B = paste(min(grade_B$ssv3.2.sco), ',', max(grade_B$ssv3.2.sco))
+  range_C = paste(min(grade_C$ssv3.2.sco), ',', max(grade_C$ssv3.2.sco))
+  range_D = paste(min(grade_D$ssv3.2.sco), ',', max(grade_D$ssv3.2.sco))
+  
+  num_A = nrow(grade_A)
+  num_B = nrow(grade_B)
+  num_C = nrow(grade_C)
+  num_D = nrow(grade_D)  
+  
+  c_A = nrow(subset(grade_A, isCon == 'true'))
+  c_B = nrow(subset(grade_B, isCon == 'true'))
+  c_C = nrow(subset(grade_C, isCon == 'true'))
+  c_D = nrow(subset(grade_D, isCon == 'true'))
+  
+  cr_A = c_A/num_A
+  cr_B = c_B/num_B
+  cr_C = c_C/num_C
+  cr_D = c_D/num_D
+  total_conv = c_A+c_B+c_C+c_D
+  
+  agg_A = c_A/total_conv
+  agg_B = (c_A+c_B)/total_conv
+  agg_C = (c_A+c_B+c_C)/total_conv
+  agg_D = (c_A+c_B+c_C+c_D)/total_conv
+  
+  agg_bucket_A = c_A/total_conv
+  agg_bucket_B = c_B/total_conv
+  agg_bucket_C = c_C/total_conv
+  agg_bucket_D = c_D/total_conv
+  
+  bucket_conversion = data.frame(c('A','B','C','D'),
+                                 c(range_A, range_B, range_C, range_D),
+                                 c(num_A, num_B, num_C, num_D),
+                                 c(c_A,c_B,c_C,c_D),
+                                 c(cr_A,cr_B,cr_C,cr_D),
+                                 c(agg_A,agg_B,agg_C,agg_D),
+                                 c(agg_bucket_A,agg_bucket_B,agg_bucket_C,agg_bucket_D))
+  colnames(bucket_conversion) <- c('Grade_Bucket', 'Score_range', 'Num_in_bucket', 'Converted', 'Conversion_Rate', 'Agg_Converted','Bucket_agg_converted')
+  bucket_conversion$Conversion_Rate = bucket_conversion$Conversion_Rate*100
+  bucket_conversion$Agg_Converted = bucket_conversion$Agg_Converted*100
+  bucket_conversion$Bucket_agg_converted = bucket_conversion$Bucket_agg_converted*100
+  bucket_conversion$Grade_Bucket_levels <- levels(bucket_conversion$Grade_Bucket)
+  
+  max_height = max(bucket_conversion$Conversion_Rate)
+  if (max_height <= 5){
+    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+0.05),size=4)+scale_y_continuous(breaks=c(0,2.5,5,10,20,30,40,50,60,70,80,90,100), limits=c(0,5))
+  } else if (max_height <= 10){
+    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+0.25),size=4)+scale_y_continuous(breaks=c(0,2.5,5,7.5,10,15,20,25,30,40,50,60,70,80,90,100), limits=c(0,10))  
+  } else if (max_height <= 25){
+    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+0.25),size=4)+scale_y_continuous(breaks=c(0,5,10,15,20,25,30,40,50,60,70,80,90,100), limits=c(0,25))  
+  } else if (max_height <= 40){
+    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+0.5),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,50))
+  } else if (max_height <= 60){
+    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+0.75),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,75))
+  }  else if (max_height <= 100) {
+    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+1.25),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))
+  }
+  
+  #ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+0.1),size=4)+scale_y_continuous(breaks=c(0,0.5,1,1.5,2,10,20,30,40,50,60,70,80,90,100), limits=c(0,2))
+  agg_plot = ggplot(bucket_conversion, aes(x=Grade_Bucket_levels, y=Agg_Converted,group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Fliptop - Percentage of Converted Leads', x='Percentage of Stack-ranked Leads (Cumulative)', y='Percentage of Aggregate Leads')+geom_text(aes(label=paste(sprintf('%.2f%%',Agg_Converted)), y=Agg_Converted-3), size=3)
+  bucket_conversion$positions = cumsum(bucket_conversion$Bucket_agg_converted) - bucket_conversion$Bucket_agg_converted/2
+  #agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_converted, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+scale_y_continuous(breaks=y.breaks, labels=sprintf('%.2f%%', bucket_conversion$Bucket_agg_converted))+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
+  agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_converted, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+geom_text(aes(label=paste(sprintf('%.2f%%', Bucket_agg_converted)),y=positions))+scale_y_continuous(breaks=c())+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
+  bucket_conversion$Grade_Bucket_levels <- NULL
+  print(bucket_conversion)
+  grid.arrange(ftop_bucket_graph)
+  grid.arrange(agg_plot)
+  grid.arrange(agg_pie_chart)
+}
+
+
 grade_bucket_conversions2 <- function(df){
-  grade_A = subset(df, Ftop__SpendScore__c <= 10 & Ftop__SpendScore__c >= 8)
-  grade_B = subset(df, Ftop__SpendScore__c <= 7 & Ftop__SpendScore__c >= 3)
-  grade_C = subset(df, Ftop__SpendScore__c <= 2 & Ftop__SpendScore__c >= 2)
+  grade_A = subset(df, Ftop__SpendScore__c <= 10 & Ftop__SpendScore__c >= 10)
+  grade_B = subset(df, Ftop__SpendScore__c <= 9 & Ftop__SpendScore__c >= 8)
+  grade_C = subset(df, Ftop__SpendScore__c <= 7 & Ftop__SpendScore__c >= 2)
   grade_D = subset(df, Ftop__SpendScore__c <= 1 & Ftop__SpendScore__c >= 1)
   
   #grade_A = df[0:183, ]
@@ -878,10 +995,10 @@ grade_bucket_conversions2 <- function(df){
   agg_C = (c_A+c_B+c_C)/total_conv
   agg_D = (c_A+c_B+c_C+c_D)/total_conv
   
-  agg_A_cr = agg_A/total_conv
-  agg_B_cr = agg_B/total_conv
-  agg_C_cr = agg_C/total_conv
-  agg_D_cr = agg_D/total_conv
+  agg_bucket_A = c_A/total_conv
+  agg_bucket_B = c_B/total_conv
+  agg_bucket_C = c_C/total_conv
+  agg_bucket_D = c_D/total_conv
   
   bucket_conversion = data.frame(c('A','B','C','D'),
                                  c(range_A, range_B, range_C, range_D),
@@ -889,12 +1006,12 @@ grade_bucket_conversions2 <- function(df){
                                  c(c_A,c_B,c_C,c_D),
                                  c(cr_A,cr_B,cr_C,cr_D),
                                  c(agg_A,agg_B,agg_C,agg_D),
-                                 c(agg_A_cr,agg_B_cr,agg_C_cr,agg_D_cr))
-  colnames(bucket_conversion) <- c('Grade_Bucket', 'Score_range', 'Num_in_bucket', 'Converted', 'Conversion_Rate', 'Agg_Converted','Agg_CR')
+                                 c(agg_bucket_A,agg_bucket_B,agg_bucket_C,agg_bucket_D))
+  colnames(bucket_conversion) <- c('Grade_Bucket', 'Score_range', 'Num_in_bucket', 'Converted', 'Conversion_Rate', 'Agg_Converted','Bucket_agg_converted')
   bucket_conversion$Conversion_Rate = bucket_conversion$Conversion_Rate*100
-  bucket_conversion$Agg_CR = bucket_conversion$Agg_CR*100
+  bucket_conversion$Agg_Converted = bucket_conversion$Agg_Converted*100
+  bucket_conversion$Bucket_agg_converted = bucket_conversion$Bucket_agg_converted*100
   bucket_conversion$Grade_Bucket_levels <- levels(bucket_conversion$Grade_Bucket)
-  bucket_conversion[is.na(bucket_conversion)] = 0
   
   max_height = max(bucket_conversion$Conversion_Rate)
   if (max_height <= 5){
@@ -909,25 +1026,29 @@ grade_bucket_conversions2 <- function(df){
     ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+1.25),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))
   }
   
-  #ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+0.25),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))
-  agg_plot = ggplot(bucket_conversion, aes(x=Grade_Bucket_levels, y=Agg_CR,group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Fliptop - Percentage of Converted Leads', x='Percentage of Stack-ranked Leads (Cumulative)', y='Percentage of Aggregate Leads')+geom_text(aes(label=paste(sprintf('%.2f%%',Agg_CR)), y=Agg_CR-3), size=3)
+  ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+0.1),size=4)+scale_y_continuous(breaks=c(0,0.5,1,1.5,2,10,20,30,40,50,60,70,80,90,100), limits=c(0,2))
+  agg_plot = ggplot(bucket_conversion, aes(x=Grade_Bucket_levels, y=Agg_Converted,group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Fliptop - Percentage of Converted Leads', x='Percentage of Stack-ranked Leads (Cumulative)', y='Percentage of Aggregate Leads')+geom_text(aes(label=paste(sprintf('%.2f%%',Agg_Converted)), y=Agg_Converted-3), size=3)
+  bucket_conversion$positions = cumsum(bucket_conversion$Bucket_agg_converted) - bucket_conversion$Bucket_agg_converted/2
+  #agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_converted, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+scale_y_continuous(breaks=y.breaks, labels=sprintf('%.2f%%', bucket_conversion$Bucket_agg_converted))+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
+  agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_converted, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+geom_text(aes(label=paste(sprintf('%.2f%%', Bucket_agg_converted)),y=positions))+scale_y_continuous(breaks=c())+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
   bucket_conversion$Grade_Bucket_levels <- NULL
   print(bucket_conversion)
   grid.arrange(ftop_bucket_graph)
   grid.arrange(agg_plot)
+  grid.arrange(agg_pie_chart)
 }
 
 
 competitor_grade_bucket <- function(df){
-  grade_A = subset(df, infer2__Infer_Score__c <= 100 & infer2__Infer_Score__c >= 51)
-  grade_B = subset(df, infer2__Infer_Score__c <= 50 & infer2__Infer_Score__c >= 46)
-  grade_C = subset(df, infer2__Infer_Score__c <= 45 & infer2__Infer_Score__c >= 39)
-  grade_D = subset(df, infer2__Infer_Score__c <= 38 & infer2__Infer_Score__c >= 0)
+  grade_A = subset(df, infer2__Infer_Score__c <= 100 & infer2__Infer_Score__c >= 80)
+  grade_B = subset(df, infer2__Infer_Score__c <= 79 & infer2__Infer_Score__c >= 68)
+  grade_C = subset(df, infer2__Infer_Score__c <= 67 & infer2__Infer_Score__c >= 43)
+  grade_D = subset(df, infer2__Infer_Score__c <= 42 & infer2__Infer_Score__c >= 0)
   
-  grade_A = subset(df, df$infer2__Infer_Rating__c == 'A')
-  grade_B = subset(df, df$infer2__Infer_Rating__c == 'B')
-  grade_C = subset(df, df$infer2__Infer_Rating__c == 'C')
-  grade_D = subset(df, df$infer2__Infer_Rating__c == 'D')
+  #grade_A = subset(df, df$infer2__Infer_Rating__c == 'A')
+  #grade_B = subset(df, df$infer2__Infer_Rating__c == 'B')
+  #grade_C = subset(df, df$infer2__Infer_Rating__c == 'C')
+  #grade_D = subset(df, df$infer2__Infer_Rating__c == 'D')
   
   range_A = paste(min(grade_A$infer2__Infer_Score__c), ',', max(grade_A$infer2__Infer_Score__c))
   range_B = paste(min(grade_B$infer2__Infer_Score__c), ',', max(grade_B$infer2__Infer_Score__c))
@@ -955,23 +1076,34 @@ competitor_grade_bucket <- function(df){
   agg_C = (c_A+c_B+c_C)/total_conv
   agg_D = (c_A+c_B+c_C+c_D)/total_conv
   
+  agg_bucket_A = c_A/total_conv
+  agg_bucket_B = c_B/total_conv
+  agg_bucket_C = c_C/total_conv
+  agg_bucket_D = c_D/total_conv
+  
   bucket_conversion = data.frame(c('A','B','C','D'),
                                  c(range_A, range_B, range_C, range_D),
                                  c(num_A, num_B, num_C, num_D),
                                  c(c_A,c_B,c_C,c_D),
                                  c(cr_A,cr_B,cr_C,cr_D),
-                                 c(agg_A,agg_B,agg_C,agg_D))
-  colnames(bucket_conversion) <- c('Grade_Bucket', 'Score_range', 'Num_in_bucket', 'Converted', 'Conversion_Rate', 'Agg_CR')  
+                                 c(agg_A,agg_B,agg_C,agg_D),
+                                 c(agg_bucket_A,agg_bucket_B,agg_bucket_C,agg_bucket_D))
+  colnames(bucket_conversion) <- c('Grade_Bucket', 'Score_range', 'Num_in_bucket', 'Converted', 'Conversion_Rate', 'Agg_Converted','Bucket_agg_converted')
   bucket_conversion$Conversion_Rate = bucket_conversion$Conversion_Rate*100
-  bucket_conversion$Agg_CR = bucket_conversion$Agg_CR*100
+  bucket_conversion$Agg_Converted = bucket_conversion$Agg_Converted*100
+  bucket_conversion$Bucket_agg_converted = bucket_conversion$Bucket_agg_converted*100
   bucket_conversion$Grade_Bucket_levels <- levels(bucket_conversion$Grade_Bucket)
   
-  comp_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= 'Brand X - Lead Conversion Rates', x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+.25),size=4)+scale_y_continuous(breaks=c(0,2.5,5,10,15,20,30,40,50,60,70,80,90,100), limits=c(0,3.5))
-  agg_plot = ggplot(bucket_conversion, aes(x=Grade_Bucket_levels, y=Agg_CR,group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='lemonchiffon3')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Brand X - Percentage of Converted Leads', x='Stack-ranked Leads by Grades (Cumulative)', y='Percentage of Aggregate Leads')+geom_text(aes(label=paste(sprintf('%.2f%%',Agg_CR)), y=Agg_CR-3), size=3)
+  comp_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= 'Infer - Lead Conversion Rates', x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+.1),size=4)+scale_y_continuous(breaks=c(0,.5,1,1.5,2,2.5,5,10,15,20,30,40,50,60,70,80,90,100), limits=c(0,2))
+  agg_plot = ggplot(bucket_conversion, aes(x=Grade_Bucket_levels, y=Agg_Converted,group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='lemonchiffon3')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Infer - Percentage of Converted Leads', x='Stack-ranked Leads by Grades (Cumulative)', y='Percentage of Aggregate Leads')+geom_text(aes(label=paste(sprintf('%.2f%%',Agg_Converted)), y=Agg_Converted-3), size=3)
+  bucket_conversion$positions = cumsum(bucket_conversion$Bucket_agg_converted) - bucket_conversion$Bucket_agg_converted/2
+  #agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_converted, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+scale_y_continuous(breaks=y.breaks, labels=sprintf('%.2f%%', bucket_conversion$Bucket_agg_converted))+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
+  agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_converted, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+geom_text(aes(label=paste(sprintf('%.2f%%', Bucket_agg_converted)),y=positions))+scale_y_continuous(breaks=c())+scale_fill_manual(values=c('lemonchiffon4','lemonchiffon3','lemonchiffon1','ivory'))
   bucket_conversion$Grade_Bucket_levels <- NULL
   print(bucket_conversion)
   grid.arrange(comp_bucket_graph)
   grid.arrange(agg_plot)
+  grid.arrange(agg_pie_chart)
 }
 
 grade_bucket_opp_won <- function(df){
@@ -984,6 +1116,11 @@ grade_bucket_opp_won <- function(df){
   grade_B = subset(df, Ftop__SpendScore__c <= 9 & Ftop__SpendScore__c >= 5)
   grade_C = subset(df, Ftop__SpendScore__c <= 4 & Ftop__SpendScore__c >= 3)
   grade_D = subset(df, Ftop__SpendScore__c <= 2 & Ftop__SpendScore__c >= 1)
+  
+  range_A = paste(min(grade_A$Ftop__SpendScore__c), ',', max(grade_A$Ftop__SpendScore__c))
+  range_B = paste(min(grade_B$Ftop__SpendScore__c), ',', max(grade_B$Ftop__SpendScore__c))
+  range_C = paste(min(grade_C$Ftop__SpendScore__c), ',', max(grade_C$Ftop__SpendScore__c))
+  range_D = paste(min(grade_D$Ftop__SpendScore__c), ',', max(grade_D$Ftop__SpendScore__c))
   
   num_A = nrow(grade_A)
   num_B = nrow(grade_B)
@@ -1016,6 +1153,7 @@ grade_bucket_opp_won <- function(df){
   agg_revD = agg_revC+revenue_D
   
   bucket_conversion = data.frame(c('A','B','C','D'),
+                                 c(range_A, range_B, range_C, range_D),
                                  c(num_A,num_B,num_C,num_D),
                                  c(c_A,c_B,c_C,c_D),
                                  c(cr_A,cr_B,cr_C,cr_D),
@@ -1023,7 +1161,7 @@ grade_bucket_opp_won <- function(df){
                                  c(revenue_A,revenue_B,revenue_C,revenue_D),
                                  c(revenue_A,agg_revB,agg_revC,agg_revD),
                                  c(revenue_A/agg_revD,agg_revB/agg_revD,agg_revC/agg_revD,agg_revD/agg_revD))
-  colnames(bucket_conversion) <- c('Grade_Bucket', 'Num_in_bucket', 'Won', 'Win_Rate', 'Agg_WR', 'Revenue', 'Agg_Revenue', 'Agg_Revenue_Percent')
+  colnames(bucket_conversion) <- c('Grade_Bucket', 'Score_Range', 'Num_in_bucket', 'Won', 'Win_Rate', 'Agg_WR', 'Revenue', 'Agg_Revenue', 'Agg_Revenue_Percent')
   bucket_conversion$Win_Rate = bucket_conversion$Win_Rate*100
   bucket_conversion$Agg_WR = bucket_conversion$Agg_WR*100
   bucket_conversion$Agg_Revenue_Percent = bucket_conversion$Agg_Revenue_Percent*100
@@ -1044,7 +1182,7 @@ grade_bucket_opp_won <- function(df){
   }
   
   #ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Opportunity Win Rate', x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.5),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,30))
-  agg_plot = ggplot(bucket_conversion, aes(x=Grade_Bucket_levels, y=Agg_WR,group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Fliptop - Percentage of Opportunities Won', x='Stack-ranked Opportunities by Grade (Cumulative)', y='Percentage of Aggregate Opportunities')+geom_text(aes(label=paste(sprintf('%.2f%%',Agg_WR)), y=Agg_WR-3), size=3)
+  agg_plot = ggplot(bucket_conversion, aes(x=Grade_Bucket_levels, y=Agg_WR,group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(-5,100))+labs(title='Fliptop - Percentage of Opportunities Won', x='Stack-ranked Opportunities by Grade (Cumulative)', y='Percentage of Aggregate Opportunities')+geom_text(aes(label=paste(sprintf('%.2f%%',Agg_WR)), y=Agg_WR-3), size=3)
   rev_plot = ggplot(bucket_conversion, aes(x=Grade_Bucket_levels, y=Agg_Revenue_Percent, group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(-5,100))+labs(title='Aggregate Revenue Percentage by Grade', x='Ranked Opportunities by Grade (Cumulative)', y='Percentage of Aggregate Opportunities')+geom_text(aes(label=paste(sprintf('%.2f%%',Agg_Revenue_Percent)), y=Agg_Revenue_Percent-3), size=3)    
   bucket_conversion$Grade_Bucket_levels <- NULL
   print(bucket_conversion)
@@ -1058,49 +1196,116 @@ grade_bucket_opp_won <- function(df){
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 leads = smarsh_new_2
   
-grade_A = subset(leads, ssv3.2.sco <= 10 & ssv3.2.sco >= 10)
-grade_B = subset(leads, ssv3.2.sco <= 9 & ssv3.2.sco >= 8)
-grade_C = subset(leads, ssv3.2.sco <= 7 & ssv3.2.sco >= 6)
-grade_D = subset(leads, ssv3.2.sco <= 5 & ssv3.2.sco >= 1)
 
-cr_A = nrow(subset(grade_A, isCon == 'True'))/nrow(grade_A)
-cr_B = nrow(subset(grade_B, isCon == 'True'))/nrow(grade_B)
-cr_C = nrow(subset(grade_C, isCon == 'True'))/nrow(grade_C)
-cr_D = nrow(subset(grade_D, isCon == 'True'))/nrow(grade_D)
-total_conv = nrow(subset(grade_A, isCon == 'True'))+nrow(subset(grade_B, isCon == 'True'))+nrow(subset(grade_C, isCon == 'True'))+nrow(subset(grade_D, isCon == 'True'))
+grade_A = subset(df, ssv3.2.sco <= 10 & ssv3.2.sco >= 10)
+grade_B = subset(df, ssv3.2.sco <= 9 & ssv3.2.sco >= 8)
+grade_C = subset(df, ssv3.2.sco <= 7 & ssv3.2.sco >= 2)
+grade_D = subset(df, ssv3.2.sco <= 1 & ssv3.2.sco >= 1)
 
-agg_A = nrow(subset(grade_A, isCon == 'True'))/total_conv
-agg_B = (nrow(subset(grade_A, isCon == 'True'))+nrow(subset(grade_B, isCon == 'True')))/total_conv
-agg_C = (nrow(subset(grade_A, isCon == 'True'))+nrow(subset(grade_B, isCon == 'True'))+nrow(subset(grade_C, isCon == 'True')))/total_conv
-agg_D = (nrow(subset(grade_A, isCon == 'True'))+nrow(subset(grade_B, isCon == 'True'))+nrow(subset(grade_C, isCon == 'True'))+nrow(subset(grade_D, isCon == 'True')))/total_conv
+#grade_A = df[0:187, ]
+#grade_B = df[188:1168, ]
+#grade_C = df[1169:2479, ]
+#grade_D = df[2480:5837, ]
 
-bucket_conversion = data.frame(c('A','B','C','D'), c(cr_A,cr_B,cr_C,cr_D), c(agg_A,agg_B,agg_C,agg_D))
-colnames(bucket_conversion) <- c('Grade_Bucket', 'Conversion_Rate', 'Agg_CR')
+range_A = paste(min(grade_A$ssv3.2.sco), ',', max(grade_A$ssv3.2.sco))
+range_B = paste(min(grade_B$ssv3.2.sco), ',', max(grade_B$ssv3.2.sco))
+range_C = paste(min(grade_C$ssv3.2.sco), ',', max(grade_C$ssv3.2.sco))
+range_D = paste(min(grade_D$ssv3.2.sco), ',', max(grade_D$ssv3.2.sco))
+
+num_A = nrow(grade_A)
+num_B = nrow(grade_B)
+num_C = nrow(grade_C)
+num_D = nrow(grade_D)  
+
+c_A = nrow(subset(grade_A, IsConverted == 'True'))
+c_B = nrow(subset(grade_B, IsConverted == 'True'))
+c_C = nrow(subset(grade_C, IsConverted == 'True'))
+c_D = nrow(subset(grade_D, IsConverted == 'True'))
+
+cr_A = c_A/num_A
+cr_B = c_B/num_B
+cr_C = c_C/num_C
+cr_D = c_D/num_D
+total_conv = c_A+c_B+c_C+c_D
+
+agg_A = c_A/total_conv
+agg_B = (c_A+c_B)/total_conv
+agg_C = (c_A+c_B+c_C)/total_conv
+agg_D = (c_A+c_B+c_C+c_D)/total_conv
+
+agg_bucket_A = c_A/total_conv
+agg_bucket_B = c_B/total_conv
+agg_bucket_C = c_C/total_conv
+agg_bucket_D = c_D/total_conv
+
+bucket_conversion = data.frame(c('A','B','C','D'),
+                               c(range_A, range_B, range_C, range_D),
+                               c(num_A, num_B, num_C, num_D),
+                               c(c_A,c_B,c_C,c_D),
+                               c(cr_A,cr_B,cr_C,cr_D),
+                               c(agg_A,agg_B,agg_C,agg_D),
+                               c(agg_bucket_A,agg_bucket_B,agg_bucket_C,agg_bucket_D))
+colnames(bucket_conversion) <- c('Grade_Bucket', 'Score_range', 'Num_in_bucket', 'Converted', 'Conversion_Rate', 'Agg_Converted', 'Bucket_agg_converted')
 bucket_conversion$Conversion_Rate = bucket_conversion$Conversion_Rate*100
-bucket_conversion$Agg_CR = bucket_conversion$Agg_CR*100
+bucket_conversion$Agg_Converted = bucket_conversion$Agg_Converted*100
+bucket_conversion$Bucket_agg_converted = bucket_conversion$Bucket_agg_converted*100
 bucket_conversion$Grade_Bucket_levels <- levels(bucket_conversion$Grade_Bucket)
-ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+.75),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,75))
-agg_plot = ggplot(bucket_conversion, aes(x=Grade_Bucket_levels, y=Agg_CR,group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Aggregate Leads Converted', x='Stack-ranked Leads', y='Aggregate Leads')+geom_text(aes(label=paste(sprintf('%.2f%%',Agg_CR)), y=Agg_CR-3), size=3)
+
+ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+0.1),size=4)+scale_y_continuous(breaks=c(0,0.5,1,1.5,2,10,20,30,40,50,60,70,80,90,100), limits=c(0,2))
+agg_plot = ggplot(bucket_conversion, aes(x=Grade_Bucket_levels, y=Agg_Converted,group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Fliptop - Percentage of Converted Leads', x='Percentage of Stack-ranked Leads (Cumulative)', y='Percentage of Aggregate Leads')+geom_text(aes(label=paste(sprintf('%.2f%%',Agg_Converted)), y=Agg_Converted-3), size=3)
+y.breaks = cumsum(bucket_conversion$Bucket_agg_converted) - bucket_conversion$Bucket_agg_converted/2
+agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_converted, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+scale_y_continuous(breaks=y.breaks, labels=sprintf('%.2f%%', bucket_conversion$Bucket_agg_converted))+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
+agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_converted, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+geom_text(aes(label=sprintf('%.2f%%', bucket_conversion$Bucket_agg_converted),y=y.breaks))+scale_y_continuous(breaks=c())+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
+
+bucket_conversion$Grade_Bucket_levels <- NULL
+bucket_conversion$Agg_CR <- NULL
 print(bucket_conversion)
 grid.arrange(ftop_bucket_graph)
 grid.arrange(agg_plot)
+grid.arrange(agg_pie_chart)
+
+
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #Quartile 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 data = read.csv('/Users/fliptop/Desktop/Customer_Stats/Marketo/Marketo_stats.csv')
+data = read.csv('/Users/fliptop/Desktop/Customer_Stats/Marketo/Marketo_stats_new1.csv')
+data = read.csv('/Users/fliptop/Desktop/Customer_Stats/Marketo/Marketo_stats_new2.csv')
 data = data[!is.na(data$ssv3.2.sco),]
 marketo_fliptop_sort = data[order(-data$ssv3.2.sco, -data$ssv3.2.rscos.2, -data$ssv3.2.rscos.1), ]
+marketo_fliptop_sort1 = data[order(-data$Ftop__SpendScore__c), ]
+marketo_fliptop_sort2 = data[order(-data$Fliptop_SpendScore_Snapshot__c), ]
+#fliptop_10 = marketo_fliptop_sort[1:2613,]
+fliptop_1 = marketo_fliptop_sort1[1:1641,]
+fliptop_2 = marketo_fliptop_sort1[1:4508,]
+
+disjoint_touch1 = subset(data, Ftop__SpendScore__c >=8 & Touch_Stage_Sort_Score_Snapshot__c < 100)
+disjoint_touch2 = subset(data, Ftop__SpendScore__c >=9 & Touch_Stage_Sort_Score_Snapshot__c < 100)
+
+disjoint_ftop1 = subset(data, Ftop__SpendScore__c < 8 & Touch_Stage_Sort_Score_Snapshot__c >= 100)
+disjoint_ftop2 = subset(data, Ftop__SpendScore__c < 9 & Touch_Stage_Sort_Score_Snapshot__c >= 100)
+
 marketo_marketo_sort = data[order(-data$Sort_Score__c), ]
 
 data_sql = data[!is.na(data$SQL_Snapshot_Sort_Score__c),]
 marketo_sql_sort = data_sql[order(-data_sql$SQL_Snapshot_Sort_Score__c), ]
 
-data_touch = data[!is.na(data$Touch_Stage_Sort_Score_Snapshot__c),]
+
+data_touch = data[!is.na(data$Ftop__SpendScore__c),]
 marketo_touch_sort = data_touch[order(-data_touch$Touch_Stage_Sort_Score_Snapshot__c), ]
+ftop_touch_sort = data_touch[order(-data_touch$Ftop__SpendScore__c), ]
 
 data_snapshot = data[!is.na(data$Fliptop_SpendScore_Snapshot__c),]
 marketo_fliptop_snapshot_sort = data_snapshot[order(-data_snapshot$Fliptop_SpendScore_Snapshot__c), ]
+
+data_touch2 = subset(data, Touch_Stage_Sort_Score_Snapshot__c <= 99| is.na(Touch_Stage_Sort_Score_Snapshot__c))
+data_touch3 = subset(data, Touch_Stage_Sort_Score_Snapshot__c >= 100)
+
+data_touch_sort = data_touch3[order(-data_touch3$Touch_Stage_Sort_Score_Snapshot__c), ]
+  
+ftop_touch_sort = data_touch2[order(-data_touch2$ssv3.2.sco, -data_touch2$ssv3.2.rscos.2, data_touch2$ssv3.2.rscos.1), ]
+
 
 marketo_quartile <- function(df){
   dec_1 = df[0:round(nrow(df)/4), ]
@@ -1122,15 +1327,15 @@ marketo_quartile <- function(df){
                        c(sum_1,sum_2,sum_3,sum_4),
                        c(sum_1,agg_sum2,agg_sum3,agg_sum4),
                        c(sum_1/agg_sum4, agg_sum2/agg_sum4, agg_sum3/agg_sum4, agg_sum4/agg_sum4))
-  colnames(quartile_df) = c('Quartile','Num_in_quartile','Num_leads_created', 'Cumulative_convert', 'Cumulative_convert_percent')
-  quartile_df$Conversion_Percent = (quartile_df$Num_leads_created/quartile_df$Num_in_quartile)*100
+  colnames(quartile_df) = c('Quartile','Num_in_quartile','Num_leads_converted', 'Cumulative_convert', 'Cumulative_convert_percent')
+  quartile_df$Conversion_Percent = (quartile_df$Num_leads_converted/quartile_df$Num_in_quartile)*100
   quartile_df$Cumulative_convert_percent = quartile_df$Cumulative_convert_percent*100
   quartile_df$Quartile = factor(quartile_df$Quartile, c('Top 25%','2nd 25%','3rd 25%','Bottom 25%'))
   quartile_df$Quartile_cumulative = c(4,3,2,1)
 
   max_height = max(quartile_df$Conversion_Percent)
   if (max_height <= 5){
-    ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,2.5,5,10,15,20,25,30,35,40,45,50), limits=c(0,5.5))  
+    ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.1),size=4)+scale_y_continuous(breaks=c(0,2.5,5,10,15,20,25,30,35,40,45,50), limits=c(0,5.5))  
   } else if (max_height <= 10){
     ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.25),size=4)+scale_y_continuous(breaks=c(0,5,10,15,20,25,30,35,40,45,50), limits=c(0,10))
   } else if (max_height <= 25){
@@ -1172,15 +1377,15 @@ marketo_marketo_quartile <- function(df){
                            c(sum_1,sum_2,sum_3,sum_4),
                            c(sum_1,agg_sum2,agg_sum3,agg_sum4),
                            c(sum_1/agg_sum4, agg_sum2/agg_sum4, agg_sum3/agg_sum4, agg_sum4/agg_sum4))
-  colnames(quartile_df) = c('Quartile','Num_in_quartile','Num_leads_created', 'Cumulative_convert', 'Cumulative_convert_percent')
-  quartile_df$Conversion_Percent = (quartile_df$Num_leads_created/quartile_df$Num_in_quartile)*100
+  colnames(quartile_df) = c('Quartile','Num_in_quartile','Num_leads_converted', 'Cumulative_convert', 'Cumulative_convert_percent')
+  quartile_df$Conversion_Percent = (quartile_df$Num_leads_converted/quartile_df$Num_in_quartile)*100
   quartile_df$Cumulative_convert_percent = quartile_df$Cumulative_convert_percent*100
   quartile_df$Quartile = factor(quartile_df$Quartile, c('Top 25%','2nd 25%','3rd 25%','Bottom 25%'))
   quartile_df$Quartile_cumulative = c(4,3,2,1)
   
   max_height = max(quartile_df$Conversion_Percent)
   if (max_height <= 5){
-    marketo_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='mediumpurple4', binwidth=1, stat='identity') + labs(title= 'Marketo - Lead Conversion Rates', x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,2.5,5,10,15,20,25,30,35,40,45,50), limits=c(0,5.5))
+    marketo_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='mediumpurple4', binwidth=1, stat='identity') + labs(title= 'Marketo - Lead Conversion Rates', x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.10),size=4)+scale_y_continuous(breaks=c(0,2.5,5,10,15,20,25,30,35,40,45,50), limits=c(0,5.5))
   } else if (max_height <= 10){
     marketo_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='mediumpurple4', binwidth=1, stat='identity') + labs(title= 'Marketo - Lead Conversion Rates', x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.15),size=4)+scale_y_continuous(breaks=c(0,2.5,5,7.5,10,15,20,25,30,35,40,45,50), limits=c(0,10))  
   } else if (max_height <= 25){
@@ -1279,6 +1484,179 @@ print(bucket_conversion)
 grid.arrange(account_bucket_graph)
 grid.arrange(agg_plot)
 
+
+
+df = gainsight_opps_new
+df_2 = subset(df, IsClosed == 'True')
+
+grade_A = subset(df_2, Ftop__SpendScore__c <= 10 & Ftop__SpendScore__c >= 10)
+grade_B = subset(df_2, Ftop__SpendScore__c <= 9 & Ftop__SpendScore__c >= 5)
+grade_C = subset(df_2, Ftop__SpendScore__c <= 4 & Ftop__SpendScore__c >= 3)
+grade_D = subset(df_2, Ftop__SpendScore__c <= 2 & Ftop__SpendScore__c >= 1)
+
+num_A = nrow(grade_A)
+num_B = nrow(grade_B)
+num_C = nrow(grade_C)
+num_D = nrow(grade_D) 
+
+c_A = nrow(subset(grade_A, IsWon == 'True'))
+c_B = nrow(subset(grade_B, IsWon == 'True'))
+c_C = nrow(subset(grade_C, IsWon == 'True'))
+c_D = nrow(subset(grade_D, IsWon == 'True'))
+
+l_A = nrow(subset(grade_A, IsWon == 'False'))
+l_B = nrow(subset(grade_B, IsWon == 'False'))
+l_C = nrow(subset(grade_C, IsWon == 'False'))
+l_D = nrow(subset(grade_D, IsWon == 'False'))
+
+total_win = c_A+c_B+c_C+c_D
+total_lost = l_A+l_B+l_C+l_D
+total_amount = nrow(df)
+
+rough_df = data.frame(c('Total','Win','Lost'),
+                      c(total_amount, total_win, total_lost))
+colnames(rough_df) = c('Category','Count')
+rough_df$Category = factor(rough_df$Category, c('Total','Win','Lost'))
+rough_plot = ggplot(rough_df, aes(x=Category, y=Count)) + geom_bar(fill='green1', binwidth=1, stat='identity')+ labs(title= 'All Opportunities Created Since Model Created', x='Stage', y='Count') + geom_text(aes(label=Count, y=Count+5),size=4)+scale_y_continuous(breaks=c(0,50,100,150), limits=c(0,150))
+
+
+
+cr_A = c_A/num_A
+cr_B = c_B/num_B
+cr_C = c_C/num_C
+cr_D = c_D/num_D
+total_conv = c_A+c_B+c_C+c_D
+
+agg_A = c_A/total_conv
+agg_B = (c_A+c_B)/total_conv
+agg_C = (c_A+c_B+c_C)/total_conv
+agg_D = (c_A+c_B+c_C+c_D)/total_conv
+
+revenue_A = sum(subset(grade_A, IsWon == 'True')$Amount)
+revenue_B = sum(subset(grade_B, IsWon == 'True')$Amount)
+revenue_C = sum(subset(grade_C, IsWon == 'True')$Amount)
+revenue_D = sum(subset(grade_D, IsWon == 'True')$Amount)
+
+agg_revB = revenue_A+revenue_B
+agg_revC = agg_revB+revenue_C
+agg_revD = agg_revC+revenue_D
+
+bucket_conversion = data.frame(c('A','B','C','D'),
+                               c(range_A, range_B, range_C, range_D),
+                               c(num_A,num_B,num_C,num_D),
+                               c(c_A,c_B,c_C,c_D),
+                               c(cr_A,cr_B,cr_C,cr_D),
+                               c(agg_A,agg_B,agg_C,agg_D),
+                               c(revenue_A,revenue_B,revenue_C,revenue_D),
+                               c(revenue_A,agg_revB,agg_revC,agg_revD),
+                               c(revenue_A/agg_revD,agg_revB/agg_revD,agg_revC/agg_revD,agg_revD/agg_revD))
+colnames(bucket_conversion) <- c('Grade_Bucket', 'Score_Range', 'Num_in_bucket', 'Won', 'Win_Rate', 'Agg_WR', 'Revenue', 'Agg_Revenue', 'Agg_Revenue_Percent')
+bucket_conversion$Win_Rate = bucket_conversion$Win_Rate*100
+bucket_conversion$Agg_WR = bucket_conversion$Agg_WR*100
+bucket_conversion$Agg_Revenue_Percent = bucket_conversion$Agg_Revenue_Percent*100
+bucket_conversion$Grade_Bucket_levels <- levels(bucket_conversion$Grade_Bucket)
+bucket_conversion[is.na(bucket_conversion)] = 0
+
+
+rough_plot2 = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Won)) + geom_bar(fill='green1', binwidth=1, stat='identity')+labs(title= 'Closed Won Since Model Created', x='Grade', y='Count') + geom_text(aes(label=Won, y=Won+.25),size=4)+scale_y_continuous(breaks=c(0,1,2,3,4,5,6,7,8,9,10,50,100,150), limits=c(0,10))
+
+
+
+
+
+df = merge(sfdc_elastic, elastic_leads, by.x='Id', by.y='rec')
+df$isCon = replace(df$isCon, df$isCon == 'true', 'True')
+
+
+grade_10 = subset(df, Ftop__SpendScore__c == 10)
+grade_9 = subset(df, Ftop__SpendScore__c == 9)
+grade_8 = subset(df, Ftop__SpendScore__c == 8)
+grade_7 = subset(df, Ftop__SpendScore__c == 7)
+grade_6 = subset(df, Ftop__SpendScore__c == 6)
+grade_5 = subset(df, Ftop__SpendScore__c == 5)
+grade_4 = subset(df, Ftop__SpendScore__c == 4)
+grade_3 = subset(df, Ftop__SpendScore__c == 3)
+grade_2 = subset(df, Ftop__SpendScore__c == 2)
+grade_1 = subset(df, Ftop__SpendScore__c == 1)
+
+grade_10 = subset(df, ssv3.2.sco == 10)
+grade_9 = subset(df, ssv3.2.sco == 9)
+grade_8 = subset(df, ssv3.2.sco == 8)
+grade_7 = subset(df, ssv3.2.sco == 7)
+grade_6 = subset(df, ssv3.2.sco == 6)
+grade_5 = subset(df, ssv3.2.sco == 5)
+grade_4 = subset(df, ssv3.2.sco == 4)
+grade_3 = subset(df, ssv3.2.sco == 3)
+grade_2 = subset(df, ssv3.2.sco == 2)
+grade_1 = subset(df, ssv3.2.sco == 1)
+
+num_10 = nrow(grade_10)
+num_9 = nrow(grade_9)
+num_8 = nrow(grade_8)
+num_7 = nrow(grade_7)
+num_6 = nrow(grade_6)
+num_5 = nrow(grade_5)
+num_4 = nrow(grade_4)
+num_3 = nrow(grade_3)  
+num_2 = nrow(grade_2)
+num_1 = nrow(grade_1)
+
+c_10 = nrow(subset(grade_10, IsConverted == 'True'))
+c_9 = nrow(subset(grade_9, IsConverted == 'True'))
+c_8 = nrow(subset(grade_8, IsConverted == 'True'))
+c_7 = nrow(subset(grade_7, IsConverted == 'True'))
+c_6 = nrow(subset(grade_6, IsConverted == 'True'))
+c_5 = nrow(subset(grade_5, IsConverted == 'True'))
+c_4 = nrow(subset(grade_4, IsConverted == 'True'))
+c_3 = nrow(subset(grade_3, IsConverted == 'True'))
+c_2 = nrow(subset(grade_2, IsConverted == 'True'))
+c_1 = nrow(subset(grade_1, IsConverted == 'True'))
+
+cr_10 = c_10/num_10
+cr_9 = c_9/num_9
+cr_8 = c_8/num_8
+cr_7 = c_7/num_7
+cr_6 = c_6/num_6
+cr_5 = c_5/num_5
+cr_4 = c_4/num_4
+cr_3 = c_3/num_3
+cr_2 = c_2/num_2
+cr_2 = 0
+#cr_3 = 0
+#cr_4 = 0
+cr_1 = c_1/num_1
+
+
+total_conv = c_10+c_9+c_8+c_7+c_6+c_5+c_4+c_3+c_2+c_1
+
+agg_10 = c_10/total_conv
+agg_9 = (c_10+c_9)/total_conv
+agg_8 = (c_10+c_9+c_8)/total_conv
+agg_7 = (c_10+c_9+c_8+c_7)/total_conv
+agg_6 = (c_10+c_9+c_8+c_7+c_6)/total_conv
+agg_5 = (c_10+c_9+c_8+c_7+c_6+c_5)/total_conv
+agg_4 = (c_10+c_9+c_8+c_7+c_6+c_5+c_4)/total_conv
+agg_3 = (c_10+c_9+c_8+c_7+c_6+c_5+c_4+c_3)/total_conv
+agg_2 = (c_10+c_9+c_8+c_7+c_6+c_5+c_4+c_3+c_2)/total_conv
+agg_1 = (c_10+c_9+c_8+c_7+c_6+c_5+c_4+c_3+c_2+c_1)/total_conv
+
+score_conversion = data.frame(c('10','9','8','7','6','5','4','3','2','1'),
+                               c(num_10, num_9, num_8, num_7, num_6, num_5, num_4, num_3, num_2, num_1),
+                               c(c_10,c_9,c_8,c_7,c_6,c_5,c_4,c_3,c_2,c_1),
+                               c(cr_10,cr_9,cr_8,cr_7,cr_6,cr_5,cr_4,cr_3,cr_2,cr_1),
+                               c(agg_10,agg_9,agg_8,agg_7,agg_6,agg_5,agg_4,agg_3,agg_2,agg_1))
+colnames(score_conversion) <- c('Score', 'Num_in_bucket', 'Converted', 'Conversion_Rate', 'Agg_Converted')
+score_conversion$Conversion_Rate = score_conversion$Conversion_Rate*100
+score_conversion$Agg_Converted = score_conversion$Agg_Converted*100
+score_conversion$Score_levels <- factor(score_conversion$Score, c('10','9','8','7','6','5','4','3','2','1'))
+score_conversion[is.na(score_conversion)] = 0
+
+score_graph = ggplot(score_conversion, aes(x=Score_levels, y=Conversion_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Score', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+0.25),size=4)+scale_y_continuous(breaks=c(0,.5,10,20,30,40,50,60,70,80,90,100), limits=c(0,1))
+agg_plot = ggplot(score_conversion, aes(x=Score_levels, y=Agg_Converted,group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Fliptop - Percentage of Converted Leads', x='Percentage of Leads (Cumulative)', y='Percentage of Aggregate Leads')+geom_text(aes(label=paste(sprintf('%.2f%%',Agg_Converted)), y=Agg_Converted-3), size=3)
+score_conversion$Score_levels <- NULL
+print(score_conversion)
+grid.arrange(score_graph)
+grid.arrange(agg_plot)
 
 
 
