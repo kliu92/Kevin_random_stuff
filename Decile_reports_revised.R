@@ -7,7 +7,7 @@ require(gridExtra)
 #---------------------------------------------------------------------------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------------------------------------------------------------------
 
-leads_decile_partition <- function(df, isconverted_name){
+decile_leads <- function(df, isconverted_name){
   dec_1 = df[0:round(nrow(df)/10), ]
   dec_2 = df[(round(nrow(df)/10)+1):round(nrow(df)*2/10), ]
   dec_3 = df[(round(nrow(df)*2/10)+1):round(nrow(df)*3/10), ]
@@ -102,7 +102,7 @@ leads_decile_partition <- function(df, isconverted_name){
   print(decile_df)
 }
 
-competitor_leads_decile_partition <- function(df, competitor){
+competitor_decile_leads <- function(df, competitor){
   dec_1 = df[0:round(nrow(df)/10), ]
   dec_2 = df[(round(nrow(df)/10)+1):round(nrow(df)*2/10), ]
   dec_3 = df[(round(nrow(df)*2/10)+1):round(nrow(df)*3/10), ]
@@ -203,7 +203,7 @@ competitor_leads_decile_partition <- function(df, competitor){
 #---------------------------------------------------------------------------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------------------------------------------------------------------
 
-opps_decile_partition <- function(df, iswon_name, amount_name){
+decile_opps <- function(df, iswon_name, amount_name){
   dec_1 = df[0:round(nrow(df)/10), ]
   dec_2 = df[(round(nrow(df)/10)+1):round(nrow(df)*2/10), ]
   dec_3 = df[(round(nrow(df)*2/10)+1):round(nrow(df)*3/10), ]
@@ -326,7 +326,7 @@ opps_decile_partition <- function(df, iswon_name, amount_name){
   print(decile_df)
 }
 
-competitor_opps_decile_partition <- function(df, competitor){
+competitor_decile_opps <- function(df, competitor){
   dec_1 = df[0:round(nrow(df)/10), ]
   dec_2 = df[(round(nrow(df)/10)+1):round(nrow(df)*2/10), ]
   dec_3 = df[(round(nrow(df)*2/10)+1):round(nrow(df)*3/10), ]
@@ -455,7 +455,7 @@ competitor_opps_decile_partition <- function(df, competitor){
 #---------------------------------------------------------------------------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------------------------------------------------------------------
 
-quartile_leads_partition <- function(df, isconverted_name){
+quartile_leads <- function(df, isconverted_name){
   dec_1 = df[0:round(nrow(df)/4), ]
   dec_2 = df[(round(nrow(df)/4)+1):round(nrow(df)*2/4), ]
   dec_3 = df[(round(nrow(df)*2/4)+1):round(nrow(df)*3/4), ]
@@ -525,7 +525,7 @@ quartile_leads_partition <- function(df, isconverted_name){
   print(quartile_df)
 }
 
-competitor_quartile_leads_partition <- function(df, competitor){
+competitor_quartile_leads <- function(df, competitor){
   dec_1 = df[0:round(nrow(df)/4), ]
   dec_2 = df[(round(nrow(df)/4)+1):round(nrow(df)*2/4), ]
   dec_3 = df[(round(nrow(df)*2/4)+1):round(nrow(df)*3/4), ]
@@ -601,7 +601,7 @@ competitor_quartile_leads_partition <- function(df, competitor){
 #---------------------------------------------------------------------------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------------------------------------------------------------------
 
-opps_quartile_partition <- function(df, iswon_name, amount_name){
+quartile_opps <- function(df, iswon_name, amount_name){
   dec_1 = df[0:round(nrow(df)/4), ]
   dec_2 = df[(round(nrow(df)/4)+1):round(nrow(df)*2/4), ]
   dec_3 = df[(round(nrow(df)*2/4)+1):round(nrow(df)*3/4), ]
@@ -685,7 +685,7 @@ opps_quartile_partition <- function(df, iswon_name, amount_name){
   print(quartile_df)
 }
 
-competitor_opps_quartile_partition <- function(df, competitor){
+competitor_opps_quartile <- function(df, competitor){
   dec_1 = df[0:round(nrow(df)/4), ]
   dec_2 = df[(round(nrow(df)/4)+1):round(nrow(df)*2/4), ]
   dec_3 = df[(round(nrow(df)*2/4)+1):round(nrow(df)*3/4), ]
@@ -775,7 +775,7 @@ competitor_opps_quartile_partition <- function(df, competitor){
 #---------------------------------------------------------------------------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------------------------------------------------------------------
 
-grade_bucket_conversions <- function(df, score_name, isconverted_name){
+grade_bucket_leads <- function(df, score_name, isconverted_name){
   grade_A = subset(df, df[ ,score_name] <= 10 & df[ ,score_name] >= 10)
   grade_B = subset(df, df[ ,score_name] <= 9 & df[ ,score_name] >= 8)
   grade_C = subset(df, df[ ,score_name] <= 7 & df[ ,score_name] >= 2)
@@ -854,7 +854,7 @@ grade_bucket_conversions <- function(df, score_name, isconverted_name){
   grid.arrange(agg_pie_chart)
 }
 
-competitor_grade_bucket <- function(df, competitor, score_name){
+competitor_grade_bucket_leads <- function(df, competitor, score_name){
   grade_A = subset(df, df[ ,score_name] <= 100 & df[ ,score_name] >= 79)
   grade_B = subset(df, df[ ,score_name] <= 78 & df[ ,score_name] >= 66)
   grade_C = subset(df, df[ ,score_name] <= 65 & df[ ,score_name] >= 39)
@@ -941,7 +941,7 @@ competitor_grade_bucket <- function(df, competitor, score_name){
 #---------------------------------------------------------------------------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------------------------------------------------------------------
 
-grade_bucket_opp_won <- function(df, score_name, iswon_name){
+grade_bucket_opps <- function(df, score_name, iswon_name){
   grade_A = subset(df, df[ ,score_name] <= 10 & df[ ,score_name] >= 10)
   grade_B = subset(df, df[ ,score_name] <= 9 & df[ ,score_name] >= 5)
   grade_C = subset(df, df[ ,score_name] <= 4 & df[ ,score_name] >= 3)
@@ -1033,7 +1033,7 @@ grade_bucket_opp_won <- function(df, score_name, iswon_name){
   grid.arrange(rev_plot)
 }
 
-competitor_grade_bucket_opp_won <- function(df, competitor, score_name){
+competitor_grade_bucket_opps <- function(df, competitor, score_name){
   grade_A = subset(df, df[ ,score_name] <= 10 & df[ ,score_name] >= 10)
   grade_B = subset(df, df[ ,score_name] <= 9 & df[ ,score_name] >= 5)
   grade_C = subset(df, df[ ,score_name] <= 4 & df[ ,score_name] >= 3)
