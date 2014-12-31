@@ -1,11 +1,35 @@
 library(ggplot2)
 require(gridExtra)
 
-#---------------------------------------------------------------------------------------------------------------------------------------------------
-#---------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#List of functions
+
+#decile_leads(df,isconverted_name)
+#competitor_decile_leads(df,competitor_name)
+
+#decile_opps(df,iswon_name,amount_name)
+#competitor_decile_opps(df,competitor_name)
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#quartile_leads(df,isconverted_name)
+#competitor_quartile_leads(df,competitor_name)
+
+#quartile_opps(df,iswon_name,amount_name)
+#competitor_quartile_opps(df,competitor_name)
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#grade_bucket_leads(df,score_name,isconverted_name)
+#competitor_grade_bucket_leads(df,competitor_name,score_name)
+
+#grade_bucket_opps(df,score_name,iswon_name,amount_name)
+#competitor_grade_bucket_opps(df,competitor_name,score_name)
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #DECILE - LEADS
-#---------------------------------------------------------------------------------------------------------------------------------------------------
-#---------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 decile_leads <- function(df, isconverted_name){
   dec_1 = df[0:round(nrow(df)/10), ]
@@ -58,11 +82,11 @@ decile_leads <- function(df, isconverted_name){
                            nrow(dec_6),nrow(dec_7),nrow(dec_8),nrow(dec_9),nrow(dec_10)),
                          c(sum_1,sum_2,sum_3,sum_4,sum_5,
                            sum_6,sum_7,sum_8,sum_9,sum_10),
-                         c(sum_1,agg_sum2,agg_sum3,agg_sum4,agg_sum5,agg_sum6,agg_sum7,agg_sum8,agg_sum9,agg_sum10),
-                         c(agg_decile_1,agg_decile_2,agg_decile_3,agg_decile_4,agg_decile_5,agg_decile_6,agg_decile_7,agg_decile_8,agg_decile_9,agg_decile_10),
+                         c(sum_1,agg_sum2,agg_sum3,agg_sum4,agg_sum5,agg_sum6,agg_sum7,agg_sum8,agg_sum9,agg_sum10),                    
                          c(sum_1/agg_sum10, agg_sum2/agg_sum10, agg_sum3/agg_sum10, agg_sum4/agg_sum10, agg_sum5/agg_sum10,
-                           agg_sum6/agg_sum10, agg_sum7/agg_sum10, agg_sum8/agg_sum10, agg_sum9/agg_sum10, agg_sum10/agg_sum10))
-  colnames(decile_df) = c('Decile','Num_in_decile','Num_leads_converted', 'Cumulative_convert', 'Decile_agg_cr', 'Cumulative_convert_percent')
+                           agg_sum6/agg_sum10, agg_sum7/agg_sum10, agg_sum8/agg_sum10, agg_sum9/agg_sum10, agg_sum10/agg_sum10),
+                         c(agg_decile_1,agg_decile_2,agg_decile_3,agg_decile_4,agg_decile_5,agg_decile_6,agg_decile_7,agg_decile_8,agg_decile_9,agg_decile_10))
+  colnames(decile_df) = c('Decile','Num_in_decile','Num_leads_converted', 'Cumulative_convert', 'Cumulative_convert_percent', 'Decile_agg_cr')
   decile_df$Conversion_Percent = (decile_df$Num_leads_converted/decile_df$Num_in_decile)*100
   decile_df$Cumulative_convert_percent = decile_df$Cumulative_convert_percent*100
   decile_df$Decile_agg_cr = decile_df$Decile_agg_cr*100
@@ -72,7 +96,11 @@ decile_leads <- function(df, isconverted_name){
   decile_df$Agg_axis = factor(decile_df$Agg_axis,c('10%','20%','30%','40%','50%','60%','70%','80%','90%','100%'))
   
   max_height = max(decile_df$Conversion_Percent)
-  if (max_height <= 5){
+  if (max_height <= 0.1){
+    ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.003),size=4)+scale_y_continuous(breaks=c(0,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.11,20,30,40,50,60,70,80,90,100), limits=c(0,0.11))  
+  } else if (max_height <= 1){
+    ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.03),size=4)+scale_y_continuous(breaks=c(0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1.1,20,30,40,50,60,70,80,90,100), limits=c(0,1))  
+  } else if (max_height <= 5){
     ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,1,2,3,4,5,10,20,30,40,50,60,70,80,90,100), limits=c(0,5))  
   } else if (max_height <= 7.5){
     ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,2.5,5,7.5,10,20,30,40,50,60,70,80,90,100), limits=c(0,7.5))  
@@ -88,7 +116,7 @@ decile_leads <- function(df, isconverted_name){
     ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+1.25),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))  
   }
   
-  #ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+num_height),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100))
+  #ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.003),size=4)+scale_y_continuous(breaks=c(0,0.025,0.05,0.075,0.1,0.125,0.15,0.175,0.2,0.225,20,30,40,50,60,70,80,90,100), limits=c(0,0.21))    
   #agg_plot = ggplot(decile_df, aes(x=Decile_cumulative, y=Cumulative_convert_percent))+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_x_continuous(breaks=c(10,20,30,40,50,60,70,80,90,100))+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Fliptop - Percentage of Converted Leads', x='Percentage of Stack-ranked Leads (Cumulative)', y='Percentage of Aggregate Leads')+geom_text(aes(label=paste(sprintf('%.2f%%',Cumulative_convert_percent)), y=Cumulative_convert_percent-3), size=3)
   agg_plot = ggplot(decile_df, aes(x=Agg_axis, y=Cumulative_convert_percent, group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Fliptop - Percentage of Converted Leads', x='Percentage of Stack-ranked Leads (Cumulative)', y='Percentage of Aggregate Leads')+geom_text(aes(label=paste(sprintf('%.2f%%',Cumulative_convert_percent)), y=Cumulative_convert_percent-3), size=3)
   decile_df$positions = cumsum(decile_df$Decile_agg_cr) - decile_df$Decile_agg_cr/2
@@ -153,11 +181,11 @@ competitor_decile_leads <- function(df, competitor){
                            nrow(dec_6),nrow(dec_7),nrow(dec_8),nrow(dec_9),nrow(dec_10)),
                          c(sum_1,sum_2,sum_3,sum_4,sum_5,
                            sum_6,sum_7,sum_8,sum_9,sum_10),
-                         c(sum_1,agg_sum2,agg_sum3,agg_sum4,agg_sum5,agg_sum6,agg_sum7,agg_sum8,agg_sum9,agg_sum10),
-                         c(agg_decile_1,agg_decile_2,agg_decile_3,agg_decile_4,agg_decile_5,agg_decile_6,agg_decile_7,agg_decile_8,agg_decile_9,agg_decile_10),
+                         c(sum_1,agg_sum2,agg_sum3,agg_sum4,agg_sum5,agg_sum6,agg_sum7,agg_sum8,agg_sum9,agg_sum10),                         
                          c(sum_1/agg_sum10, agg_sum2/agg_sum10, agg_sum3/agg_sum10, agg_sum4/agg_sum10, agg_sum5/agg_sum10,
-                           agg_sum6/agg_sum10, agg_sum7/agg_sum10, agg_sum8/agg_sum10, agg_sum9/agg_sum10, agg_sum10/agg_sum10))
-  colnames(decile_df) = c('Decile','Num_in_decile','Num_leads_converted', 'Cumulative_convert', 'Decile_agg_cr', 'Cumulative_convert_percent')
+                           agg_sum6/agg_sum10, agg_sum7/agg_sum10, agg_sum8/agg_sum10, agg_sum9/agg_sum10, agg_sum10/agg_sum10),
+                         c(agg_decile_1,agg_decile_2,agg_decile_3,agg_decile_4,agg_decile_5,agg_decile_6,agg_decile_7,agg_decile_8,agg_decile_9,agg_decile_10))
+  colnames(decile_df) = c('Decile','Num_in_decile','Num_leads_converted', 'Cumulative_convert', 'Cumulative_convert_percent', 'Decile_agg_cr')
   decile_df$Conversion_Percent = (decile_df$Num_leads_converted/decile_df$Num_in_decile)*100
   decile_df$Cumulative_convert_percent = decile_df$Cumulative_convert_percent*100
   decile_df$Decile_agg_cr = decile_df$Decile_agg_cr*100
@@ -167,7 +195,11 @@ competitor_decile_leads <- function(df, competitor){
   decile_df$Agg_axis = factor(decile_df$Agg_axis,c('10%','20%','30%','40%','50%','60%','70%','80%','90%','100%'))
   
   max_height = max(decile_df$Conversion_Percent)
-  if (max_height <= 5){
+  if (max_height <= 0.1){
+    ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Lead Conversion Rates'), x='Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.003),size=4)+scale_y_continuous(breaks=c(0,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.11), limits=c(0,0.11))
+  } else if (max_height <= 1){
+    ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Lead Conversion Rates'), x='Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.03),size=4)+scale_y_continuous(breaks=c(0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1.1), limits=c(0,1))
+  } else if (max_height <= 5){
     ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Lead Conversion Rates'), x='Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,1,2,3,4,5,10,20,30,40,50,60,70,80,90,100), limits=c(0,5))
   } else if (max_height <= 7.5){
     ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Conversion_Percent)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Lead Conversion Rates'), x='Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,1,2,3,4,5,6,7,8,9,10,20,30,40,50,60,70,80,90,100), limits=c(0,7.5))
@@ -197,11 +229,11 @@ competitor_decile_leads <- function(df, competitor){
   print(decile_df)
 }
 
-#---------------------------------------------------------------------------------------------------------------------------------------------------
-#---------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #DECILE - OPPORTUNITIES
-#---------------------------------------------------------------------------------------------------------------------------------------------------
-#---------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 decile_opps <- function(df, iswon_name, amount_name){
   dec_1 = df[0:round(nrow(df)/10), ]
@@ -293,7 +325,11 @@ decile_opps <- function(df, iswon_name, amount_name){
   decile_df$Decile_cumulative = c(10,20,30,40,50,60,70,80,90,100)
   
   max_height = max(decile_df$Win_Percent)
-  if (max_height <= 5){
+  if (max_height <= 1){
+    ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Win_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Opportunity Win Rate (since model creation)', x='Decile - Stack-ranked Opportunities', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Percent)), y=Win_Percent+0.003),size=4)+scale_y_continuous(breaks=c(0,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.11), limits=c(0,0.11))
+  } else if (max_height <= 1){
+    ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Win_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Opportunity Win Rate (since model creation)', x='Decile - Stack-ranked Opportunities', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Percent)), y=Win_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1.1), limits=c(0,1))
+  } else if (max_height <= 5){
     ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Win_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Opportunity Win Rate (since model creation)', x='Decile - Stack-ranked Opportunities', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Percent)), y=Win_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,1,2,3,4,5,10,20,30,40,50,60,70,80,90,100), limits=c(0,5))
   } else if (max_height <= 7.5){
     ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Win_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Opportunity Win Rate (since model creation)', x='Decile - Stack-ranked Opportunities', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Percent)), y=Win_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,1,2,3,4,5,6,7,8,10,20,30,40,50,60,70,80,90,100), limits=c(0,7.5))
@@ -416,7 +452,11 @@ competitor_decile_opps <- function(df, competitor){
   decile_df$Decile_cumulative = c(10,20,30,40,50,60,70,80,90,100)
   
   max_height = max(decile_df$Win_Percent)
-  if (max_height <= 5){
+  if (max_height <= .1){
+    ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Win_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Opportunity Win Rate (since model creation)', x='Decile - Stack-ranked Opportunities', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Percent)), y=Win_Percent+0.003),size=4)+scale_y_continuous(breaks=c(0,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.11), limits=c(0,0.11))
+  } else if (max_height <= 1){
+    ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Win_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Opportunity Win Rate (since model creation)', x='Decile - Stack-ranked Opportunities', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Percent)), y=Win_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1.1), limits=c(0,1))
+  } else if (max_height <= 5){
     ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Win_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Opportunity Win Rate (since model creation)', x='Decile - Stack-ranked Opportunities', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Percent)), y=Win_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,1,2,3,4,5,10,20,30,40,50,60,70,80,90,100), limits=c(0,5))
   } else if (max_height <= 7.5){
     ftop_conv_graph = ggplot(decile_df, aes(x=Decile, y=Win_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Opportunity Win Rate (since model creation)', x='Decile - Stack-ranked Opportunities', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Percent)), y=Win_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,1,2,3,4,5,6,7,8,10,20,30,40,50,60,70,80,90,100), limits=c(0,7.5))
@@ -449,11 +489,11 @@ competitor_decile_opps <- function(df, competitor){
   print(decile_df)
 }
 
-#---------------------------------------------------------------------------------------------------------------------------------------------------
-#---------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #QUARTILE - LEADS
-#---------------------------------------------------------------------------------------------------------------------------------------------------
-#---------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 quartile_leads <- function(df, isconverted_name){
   dec_1 = df[0:round(nrow(df)/4), ]
@@ -491,30 +531,29 @@ quartile_leads <- function(df, isconverted_name){
   quartile_df$Agg_axis = c('25%','50%','75%','100%')
   quartile_df$Agg_axis = factor(quartile_df$Agg_axis,c('25%','50%','75%','100%'))
   quartile_df$Quartile_cumulative = c(4,3,2,1)
-
+  
   max_height = max(quartile_df$Conversion_Percent)
-  num_height = 0.5
-  if (max_height <= 5){
-    num_height = 0.05
-    ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,2.5,5,10,15,20,25,30,35,40,45,50), limits=c(0,5))
+  if (max_height <= 0.1){
+    ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.003),size=4)+scale_y_continuous(breaks=c(0,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.11), limits=c(0,0.11))
+  } else if (max_height <= 1){
+    ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1.1), limits=c(0,1))
+  } else if (max_height <= 5){
+    ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,1,2,3,4,5,10,15,20,25,30,35,40,45,50), limits=c(0,5))
   } else if (max_height <= 25){
-    num_height = 0.15
     ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.25),size=4)+scale_y_continuous(breaks=c(0,5,10,15,20,25,30,35,40,45,50), limits=c(0,25))
   } else if (max_height <= 40){
-    num_height = 0.5
     ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.5),size=4)+scale_y_continuous(breaks=c(0,5,10,15,20,25,30,35,40,45,50), limits=c(0,50))
   } else if (max_height <= 60){
-    num_height = 0.75
     ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.75),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,75))
   }  else if (max_height <= 100) {
-    num_height = 1
     ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+1.25),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))
   }
 
   #ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+num_height),size=4)+scale_y_continuous(breaks=c(0,2.5,5,10,15,20,25,30,35,40,45,50), limits=c(0,5))
   agg_plot = ggplot(quartile_df, aes(x=Agg_axis, y=Cumulative_convert_percent, group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Fliptop - Percentage of Converted Leads', x='Percentage of Stack-ranked Leads (Cumulative)', y='Percentage of Aggregate Leads')+geom_text(aes(label=paste(sprintf('%.2f%%',Cumulative_convert_percent)), y=Cumulative_convert_percent-3), size=3)
   quartile_df$positions = cumsum(quartile_df$Quartile_agg_converted) - quartile_df$Quartile_agg_converted/2
-  agg_pie_chart = ggplot(quartile_df, aes(x=factor(1), y=Quartile_agg_converted, fill=Quartile))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+geom_text(aes(label=paste(sprintf('%.2f%%', Quartile_agg_converted)),y=positions))+scale_y_continuous(breaks=c())+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
+  #agg_pie_chart = ggplot(quartile_df, aes(x=factor(1), y=Quartile_agg_converted, fill=Quartile))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle(paste('Fliptop - Percentage of Total Converted Leads'))+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+scale_y_continuous(breaks=quartile_df$positions, labels=sprintf('%.2f%%', quartile_df$Quartile_agg_converted))+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
+  agg_pie_chart = ggplot(quartile_df, aes(x=factor(1), y=Quartile_agg_converted, fill=Quartile))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Fliptop - Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+geom_text(aes(label=paste(sprintf('%.2f%%', Quartile_agg_converted)),y=positions))+scale_y_continuous(breaks=c())+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
   
   grid.arrange(ftop_conv_graph)
   grid.arrange(agg_plot)
@@ -561,29 +600,28 @@ competitor_quartile_leads <- function(df, competitor){
   quartile_df$Agg_axis = c('25%','50%','75%','100%')
   quartile_df$Agg_axis = factor(quartile_df$Agg_axis,c('25%','50%','75%','100%'))
   quartile_df$Quartile_cumulative = c(4,3,2,1)
-  
+
   max_height = max(quartile_df$Conversion_Percent)
-  num_height = 0.5
-  if (max_height <= 5){
-    num_height = 0.05
+  if (max_height <= 0.1){
+    ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Lead Conversion Rates'), x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.003),size=4)+scale_y_continuous(breaks=c(0,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.11), limits=c(0,0.11))
+  } else if (max_height <= 1){
+    ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Lead Conversion Rates'), x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1.1), limits=c(0,1))
+  } else if (max_height <= 5){
     ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Lead Conversion Rates'), x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,2.5,5,10,15,20,25,30,35,40,45,50), limits=c(0,5))
   } else if (max_height <= 25){
-    num_height = 0.15
     ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Lead Conversion Rates'), x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.25),size=4)+scale_y_continuous(breaks=c(0,5,10,15,20,25,30,35,40,45,50), limits=c(0,25))
   } else if (max_height <= 40){
-    num_height = 0.5
     ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Lead Conversion Rates'), x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.5),size=4)+scale_y_continuous(breaks=c(0,5,10,15,20,25,30,35,40,45,50), limits=c(0,50))
   } else if (max_height <= 60){
-    num_height = 0.75
     ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Lead Conversion Rates'), x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+0.75),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,75))
   }  else if (max_height <= 100) {
-    num_height = 1
     ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Lead Conversion Rates'), x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+1.25),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))
   }
   
   #ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Conversion_Percent)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Lead Conversion Rates'), x='Quartile - Stack-ranked Leads', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Percent)), y=Conversion_Percent+num_height),size=4)+scale_y_continuous(breaks=c(0,2.5,5,10,15,20,25,30,35,40,45,50), limits=c(0,5))
   agg_plot = ggplot(quartile_df, aes(x=Agg_axis, y=Cumulative_convert_percent, group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='lemonchiffon3')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title=paste(competitor,' - Percentage of Converted Leads'), x='Percentage of Stack-ranked Leads (Cumulative)', y='Percentage of Aggregate Leads')+geom_text(aes(label=paste(sprintf('%.2f%%',Cumulative_convert_percent)), y=Cumulative_convert_percent-3), size=3)
   quartile_df$positions = cumsum(quartile_df$Quartile_agg_converted) - quartile_df$Quartile_agg_converted/2
+  #agg_pie_chart = ggplot(quartile_df, aes(x=factor(1), y=Quartile_agg_converted, fill=Quartile))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle(paste(competitor, ' - Percentage of Total Converted Leads'))+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+scale_y_continuous(breaks=quartile_df$positions, labels=sprintf('%.2f%%', quartile_df$Quartile_agg_converted))+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
   agg_pie_chart = ggplot(quartile_df, aes(x=factor(1), y=Quartile_agg_converted, fill=Quartile))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+geom_text(aes(label=paste(sprintf('%.2f%%', Quartile_agg_converted)),y=positions))+scale_y_continuous(breaks=c())+scale_fill_manual(values=c('lemonchiffon4','lemonchiffon3','lemonchiffon1','ivory'))
   
   grid.arrange(ftop_conv_graph)
@@ -595,11 +633,11 @@ competitor_quartile_leads <- function(df, competitor){
   print(quartile_df)
 }
 
-#---------------------------------------------------------------------------------------------------------------------------------------------------
-#---------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #QUARTILE - OPPORTUNITIES
-#---------------------------------------------------------------------------------------------------------------------------------------------------
-#---------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 quartile_opps <- function(df, iswon_name, amount_name){
   dec_1 = df[0:round(nrow(df)/4), ]
@@ -651,7 +689,11 @@ quartile_opps <- function(df, iswon_name, amount_name){
   quartile_df$Quartile_cumulative = c(4,3,2,1)
   
   max_height = max(quartile_df$Win_Percent)
-  if (max_height <= 5){
+  if (max_height <= .1){
+    ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Win_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Opportunity Win Rate (since model creation)', x='Stack-ranked Opportunities', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Percent)), y=Win_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.11), limits=c(0,0.11))
+  } else if (max_height <= 1){
+    ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Win_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Opportunity Win Rate (since model creation)', x='Stack-ranked Opportunities', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Percent)), y=Win_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1.1), limits=c(0,1))
+  } else if (max_height <= 5){
     ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Win_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Opportunity Win Rate (since model creation)', x='Stack-ranked Opportunities', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Percent)), y=Win_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,1,2,3,4,5,10,20,30,40,50,60,70,80,90,100), limits=c(0,5))
   } else if (max_height <= 7.5){
     ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Win_Percent)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Opportunity Win Rate (since model creation)', x='Stack-ranked Opportunities', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Percent)), y=Win_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,1,2,3,4,5,6,7,8,10,20,30,40,50,60,70,80,90,100), limits=c(0,7.5))
@@ -672,7 +714,7 @@ quartile_opps <- function(df, iswon_name, amount_name){
   #rev_plot = ggplot(quartile_df, aes(x=Agg_axis, y=Cumulative_revenue_percent, group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_x_reverse(breaks=1:10)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Aggregate Revenue Percentage by Decile (since model creation)', x='Decile - Stack-ranked Opportunities', y='Aggregate Revenue')+geom_text(aes(label=paste(sprintf('%.2f%%',Cumulative_revenue_percent)), y=Cumulative_revenue_percent-3), size=3)  
   agg_plot = ggplot(quartile_df, aes(x=Agg_axis, y=Cumulative_win_percent, group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Aggregate Opportunities Won (since model creation)', x='Decile - Stack-ranked Opportunities', y='Aggregate Opportunities')+geom_text(aes(label=paste(sprintf('%.2f%%',Cumulative_win_percent)), y=Cumulative_win_percent-3), size=3)  
   quartile_df$positions = cumsum(quartile_df$Quartile_agg_win) - quartile_df$Quartile_agg_win/2
-  #agg_pie_chart = ggplot(quartile_df, aes(x=factor(1), y=Quartile_agg_win, fill=Quartile))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Fliptop - Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+scale_y_continuous(breaks=y.breaks, labels=sprintf('%.2f%%', bucket_conversion$Bucket_agg_converted))+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
+  #agg_pie_chart = ggplot(quartile_df, aes(x=factor(1), y=Quartile_agg_win, fill=Quartile))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Fliptop - Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+scale_y_continuous(breaks=quartile_df$positions, labels=sprintf('%.2f%%', quartile_df$Quartile_agg_win))+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
   agg_pie_chart = ggplot(quartile_df, aes(x=factor(1), y=Quartile_agg_win, fill=Quartile))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Fliptop - Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+geom_text(aes(label=paste(sprintf('%.2f%%', Quartile_agg_win)),y=positions))+scale_y_continuous(breaks=c())+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
   rev_plot = ggplot(quartile_df, aes(x=Agg_axis, y=Cumulative_revenue_percent, group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Fliptop - Aggregate Revenue Percentage by Quartile (since model creation)', x='Stack-ranked Opportunities', y='Aggregate Revenue')+geom_text(aes(label=paste(sprintf('%.2f%%',Cumulative_revenue_percent)), y=Cumulative_revenue_percent-3), size=3)    
   grid.arrange(ftop_conv_graph)
@@ -685,7 +727,7 @@ quartile_opps <- function(df, iswon_name, amount_name){
   print(quartile_df)
 }
 
-competitor_opps_quartile <- function(df, competitor){
+competitor_quartile_opps <- function(df, competitor){
   dec_1 = df[0:round(nrow(df)/4), ]
   dec_2 = df[(round(nrow(df)/4)+1):round(nrow(df)*2/4), ]
   dec_3 = df[(round(nrow(df)*2/4)+1):round(nrow(df)*3/4), ]
@@ -735,7 +777,11 @@ competitor_opps_quartile <- function(df, competitor){
   quartile_df$Quartile_cumulative = c(4,3,2,1)
   
   max_height = max(quartile_df$Win_Percent)
-  if (max_height <= 5){
+  if (max_height <= 0.1){
+    ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Win_Percent)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Opportunity Win Rate (since model creation)'), x='Stack-ranked Opportunities', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Percent)), y=Win_Percent+0.0),size=4)+scale_y_continuous(breaks=c(0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1.1), limits=c(0,1))
+  } else if (max_height <= 1){
+    ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Win_Percent)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Opportunity Win Rate (since model creation)'), x='Stack-ranked Opportunities', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Percent)), y=Win_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1.1), limits=c(0,1))
+  } else if (max_height <= 5){
     ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Win_Percent)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Opportunity Win Rate (since model creation)'), x='Stack-ranked Opportunities', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Percent)), y=Win_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,1,2,3,4,5,10,20,30,40,50,60,70,80,90,100), limits=c(0,5))
   } else if (max_height <= 7.5){
     ftop_conv_graph = ggplot(quartile_df, aes(x=Quartile, y=Win_Percent)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Opportunity Win Rate (since model creation)'), x='Stack-ranked Opportunities', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Percent)), y=Win_Percent+0.05),size=4)+scale_y_continuous(breaks=c(0,1,2,3,4,5,6,7,8,10,20,30,40,50,60,70,80,90,100), limits=c(0,7.5))
@@ -756,7 +802,7 @@ competitor_opps_quartile <- function(df, competitor){
   #rev_plot = ggplot(quartile_df, aes(x=Agg_axis, y=Cumulative_revenue_percent, group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_x_reverse(breaks=1:10)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Aggregate Revenue Percentage by Decile (since model creation)', x='Decile - Stack-ranked Opportunities', y='Aggregate Revenue')+geom_text(aes(label=paste(sprintf('%.2f%%',Cumulative_revenue_percent)), y=Cumulative_revenue_percent-3), size=3)  
   agg_plot = ggplot(quartile_df, aes(x=Agg_axis, y=Cumulative_win_percent, group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Aggregate Opportunities Won (since model creation)', x='Decile - Stack-ranked Opportunities', y='Aggregate Opportunities')+geom_text(aes(label=paste(sprintf('%.2f%%',Cumulative_win_percent)), y=Cumulative_win_percent-3), size=3)  
   quartile_df$positions = cumsum(quartile_df$Quartile_agg_win) - quartile_df$Quartile_agg_win/2
-  #agg_pie_chart = ggplot(quartile_df, aes(x=factor(1), y=Quartile_agg_win, fill=Quartile))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle(paste(competitor, ' - Percentage of Total Converted Leads'))+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+scale_y_continuous(breaks=y.breaks, labels=sprintf('%.2f%%', bucket_conversion$Bucket_agg_converted))+scale_fill_manual(values=c('lemonchiffon4','lemonchiffon3','lemonchiffon1','ivory'))
+  #agg_pie_chart = ggplot(quartile_df, aes(x=factor(1), y=Quartile_agg_win, fill=Quartile))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle(paste(competitor, ' - Percentage of Total Converted Leads'))+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+scale_y_continuous(breaks=quartile_df$positions, labels=sprintf('%.2f%%', bucket_conversion$Bucket_agg_converted))+scale_fill_manual(values=c('lemonchiffon4','lemonchiffon3','lemonchiffon1','ivory'))
   agg_pie_chart = ggplot(quartile_df, aes(x=factor(1), y=Quartile_agg_win, fill=Quartile))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle(paste(competitor, ' - Percentage of Total Converted Leads'))+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+geom_text(aes(label=paste(sprintf('%.2f%%', Quartile_agg_win)),y=positions))+scale_y_continuous(breaks=c())+scale_fill_manual(values=c('lemonchiffon4','lemonchiffon3','lemonchiffon1','ivory'))
   rev_plot = ggplot(quartile_df, aes(x=Agg_axis, y=Cumulative_revenue_percent, group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Aggregate Revenue Percentage by Decile (since model creation)', x='Decile - Stack-ranked Opportunities', y='Aggregate Revenue')+geom_text(aes(label=paste(sprintf('%.2f%%',Cumulative_revenue_percent)), y=Cumulative_revenue_percent-3), size=3)    
   grid.arrange(ftop_conv_graph)
@@ -769,16 +815,16 @@ competitor_opps_quartile <- function(df, competitor){
   print(decile_df)
 }
 
-#---------------------------------------------------------------------------------------------------------------------------------------------------
-#---------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #BUCKET - LEADS
-#---------------------------------------------------------------------------------------------------------------------------------------------------
-#---------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 grade_bucket_leads <- function(df, score_name, isconverted_name){
-  grade_A = subset(df, df[ ,score_name] <= 10 & df[ ,score_name] >= 10)
-  grade_B = subset(df, df[ ,score_name] <= 9 & df[ ,score_name] >= 8)
-  grade_C = subset(df, df[ ,score_name] <= 7 & df[ ,score_name] >= 2)
+  grade_A = subset(df, df[ ,score_name] <= 10 & df[ ,score_name] >= 8)
+  grade_B = subset(df, df[ ,score_name] <= 7 & df[ ,score_name] >= 5)
+  grade_C = subset(df, df[ ,score_name] <= 4 & df[ ,score_name] >= 2)
   grade_D = subset(df, df[ ,score_name] <= 1 & df[ ,score_name] >= 1)
   
   range_A = paste(min(grade_A[ ,score_name]), ',', max(grade_A[ ,score_name]))
@@ -826,7 +872,11 @@ grade_bucket_leads <- function(df, score_name, isconverted_name){
   bucket_conversion$Grade_Bucket_levels <- levels(bucket_conversion$Grade_Bucket)
   
   max_height = max(bucket_conversion$Conversion_Rate)
-  if (max_height <= 5){
+  if (max_height <= .1){
+    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+0.003),size=4)+scale_y_continuous(breaks=c(0,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.11), limits=c(0,0.11))
+  } else if (max_height <= 1){
+    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+0.05),size=4)+scale_y_continuous(breaks=c(0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1.1), limits=c(0,1))
+  } else if (max_height <= 5){
     ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+0.05),size=4)+scale_y_continuous(breaks=c(0,2.5,5,10,20,30,40,50,60,70,80,90,100), limits=c(0,5))
   } else if (max_height <= 10){
     ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+0.25),size=4)+scale_y_continuous(breaks=c(0,2.5,5,7.5,10,15,20,25,30,40,50,60,70,80,90,100), limits=c(0,10))  
@@ -843,8 +893,8 @@ grade_bucket_leads <- function(df, score_name, isconverted_name){
   #ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Lead Conversion Rates', x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+0.1),size=4)+scale_y_continuous(breaks=c(0,0.5,1,1.5,2,10,20,30,40,50,60,70,80,90,100), limits=c(0,2))
   agg_plot = ggplot(bucket_conversion, aes(x=Grade_Bucket_levels, y=Agg_Converted,group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title='Fliptop - Percentage of Converted Leads', x='Percentage of Stack-ranked Leads (Cumulative)', y='Percentage of Aggregate Leads')+geom_text(aes(label=paste(sprintf('%.2f%%',Agg_Converted)), y=Agg_Converted-3), size=3)
   bucket_conversion$positions = cumsum(bucket_conversion$Bucket_agg_converted) - bucket_conversion$Bucket_agg_converted/2
-  #agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_converted, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+scale_y_continuous(breaks=y.breaks, labels=sprintf('%.2f%%', bucket_conversion$Bucket_agg_converted))+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
-  agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_converted, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+geom_text(aes(label=paste(sprintf('%.2f%%', Bucket_agg_converted)),y=positions))+scale_y_continuous(breaks=c())+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
+  #agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_converted, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Fliptop - Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+scale_y_continuous(breaks=bucket_conversion$positions, labels=sprintf('%.2f%%', bucket_conversion$Bucket_agg_converted))+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
+  agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_converted, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Fliptop - Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+geom_text(aes(label=paste(sprintf('%.2f%%', Bucket_agg_converted)),y=positions))+scale_y_continuous(breaks=c())+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
   
   bucket_conversion$Grade_Bucket_levels <- NULL
   bucket_conversion$positions <- NULL
@@ -910,7 +960,11 @@ competitor_grade_bucket_leads <- function(df, competitor, score_name){
   bucket_conversion$Grade_Bucket_levels <- levels(bucket_conversion$Grade_Bucket)
   
   max_height = max(bucket_conversion$Conversion_Rate)
-  if (max_height <= 5){
+  if (max_height <= 1){
+    comp_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Lead Conversion Rates'), x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+.003),size=4)+scale_y_continuous(breaks=c(0,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.11), limits=c(0,0.11))
+  } else if (max_height <= 1){
+    comp_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Lead Conversion Rates'), x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+.05),size=4)+scale_y_continuous(breaks=c(0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1.1), limits=c(0,1))
+  } else if (max_height <= 5){
     comp_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Lead Conversion Rates'), x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+.05),size=4)+scale_y_continuous(breaks=c(0,2.5,5,10,20,30,40,50,60,70,80,90,100), limits=c(0,5))
   } else if (max_height <= 25){
     comp_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Lead Conversion Rates'), x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+0.25),size=4)+scale_y_continuous(breaks=c(0,5,10,15,20,25,30,40,50,60,70,80,90,100), limits=c(0,25))  
@@ -925,7 +979,7 @@ competitor_grade_bucket_leads <- function(df, competitor, score_name){
   #comp_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Conversion_Rate)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Lead Conversion Rates'), x='Grades - Adjusted for Comparative Analysis', y='Conversion Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Conversion_Rate)), y=Conversion_Rate+.1),size=4)+scale_y_continuous(breaks=c(0,.5,1,1.5,2,2.5,5,10,15,20,30,40,50,60,70,80,90,100), limits=c(0,2))
   agg_plot = ggplot(bucket_conversion, aes(x=Grade_Bucket_levels, y=Agg_Converted,group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='lemonchiffon3')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,100))+labs(title=paste(competitor, ' - Percentage of Converted Leads'), x='Stack-ranked Leads by Grades (Cumulative)', y='Percentage of Aggregate Leads')+geom_text(aes(label=paste(sprintf('%.2f%%',Agg_Converted)), y=Agg_Converted-3), size=3)
   bucket_conversion$positions = cumsum(bucket_conversion$Bucket_agg_converted) - bucket_conversion$Bucket_agg_converted/2
-  #agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_converted, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+scale_y_continuous(breaks=y.breaks, labels=sprintf('%.2f%%', bucket_conversion$Bucket_agg_converted))+scale_fill_manual(values=c('lemonchiffon4','lemonchiffon3','lemonchiffon1','ivory'))
+  #agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_converted, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle(paste(competitor, ' - Percentage of Total Converted Leads'))+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+scale_y_continuous(breaks=bucket_conversion$positions, labels=sprintf('%.2f%%', bucket_conversion$Bucket_agg_converted))+scale_fill_manual(values=c('lemonchiffon4','lemonchiffon3','lemonchiffon1','ivory'))
   agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_converted, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle(paste(competitor, ' - Percentage of Total Converted Leads'))+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+geom_text(aes(label=paste(sprintf('%.2f%%', Bucket_agg_converted)),y=positions))+scale_y_continuous(breaks=c())+scale_fill_manual(values=c('lemonchiffon4','lemonchiffon3','lemonchiffon1','ivory'))
   bucket_conversion$Grade_Bucket_levels <- NULL
   bucket_conversion$positions <- NULL
@@ -935,13 +989,13 @@ competitor_grade_bucket_leads <- function(df, competitor, score_name){
   grid.arrange(agg_pie_chart)
 }
 
-#---------------------------------------------------------------------------------------------------------------------------------------------------
-#---------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #BUCKET - OPPORTUNITIES
-#---------------------------------------------------------------------------------------------------------------------------------------------------
-#---------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-grade_bucket_opps <- function(df, score_name, iswon_name){
+grade_bucket_opps <- function(df, score_name, iswon_name, amount_name){
   grade_A = subset(df, df[ ,score_name] <= 10 & df[ ,score_name] >= 10)
   grade_B = subset(df, df[ ,score_name] <= 9 & df[ ,score_name] >= 5)
   grade_C = subset(df, df[ ,score_name] <= 4 & df[ ,score_name] >= 3)
@@ -978,10 +1032,10 @@ grade_bucket_opps <- function(df, score_name, iswon_name){
   agg_bucket_C = c_C/total_conv
   agg_bucket_D = c_D/total_conv
   
-  revenue_A = sum(subset(grade_A, grade_A[ ,iswon_name] == 'True')$Amount)
-  revenue_B = sum(subset(grade_B, grade_B[ ,iswon_name] == 'True')$Amount)
-  revenue_C = sum(subset(grade_C, grade_C[ ,iswon_name] == 'True')$Amount)
-  revenue_D = sum(subset(grade_D, grade_D[ ,iswon_name] == 'True')$Amount)
+  revenue_A = sum(subset(grade_A, grade_A[ ,iswon_name] == 'True')[ ,amount_name])
+  revenue_B = sum(subset(grade_B, grade_B[ ,iswon_name] == 'True')[ ,amount_name])
+  revenue_C = sum(subset(grade_C, grade_C[ ,iswon_name] == 'True')[ ,amount_name])
+  revenue_D = sum(subset(grade_D, grade_D[ ,iswon_name] == 'True')[ ,amount_name])
   
   agg_revB = revenue_A+revenue_B
   agg_revC = agg_revB+revenue_C
@@ -1006,22 +1060,26 @@ grade_bucket_opps <- function(df, score_name, iswon_name){
   bucket_conversion[is.na(bucket_conversion)] = 0
   
   max_height = max(bucket_conversion$Win_Rate)
-  if (max_height <= 5){
-    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Opportunity Win Rate', x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.5),size=4)+scale_y_continuous(breaks=c(0,2.5,5,10,20,30,40,50,60,70,80,90,100), limits=c(0,5))
+  if (max_height <= .1){
+    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Opportunity Win Rate', x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.003),size=4)+scale_y_continuous(breaks=c(0,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.11), limits=c(0,.11))
+  } else if (max_height <= 1){
+    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Opportunity Win Rate', x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.05),size=4)+scale_y_continuous(breaks=c(0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1.1), limits=c(0,1))
+  } else if (max_height <= 5){
+    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Opportunity Win Rate', x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.05),size=4)+scale_y_continuous(breaks=c(0,2.5,5,10,20,30,40,50,60,70,80,90,100), limits=c(0,5))
   } else if (max_height <= 25){
-    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Opportunity Win Rate', x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.5),size=4)+scale_y_continuous(breaks=c(0,5,10,15,20,25,30,40,50,60,70,80,90,100), limits=c(0,25))
+    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Opportunity Win Rate', x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.25),size=4)+scale_y_continuous(breaks=c(0,5,10,15,20,25,30,40,50,60,70,80,90,100), limits=c(0,25))
   } else if (max_height <= 40){
     ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Opportunity Win Rate', x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.5),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,50))
   } else if (max_height <= 70){
-    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Opportunity Win Rate', x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.5),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,75))
+    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Opportunity Win Rate', x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.75),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,75))
   }  else if (max_height <= 100) {
-    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Opportunity Win Rate', x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.5),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,105))
+    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Opportunity Win Rate', x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+1.25),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,105))
   }
   
   #ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='green1', binwidth=1, stat='identity') + labs(title= 'Fliptop - Opportunity Win Rate', x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.5),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,30))
   agg_plot = ggplot(bucket_conversion, aes(x=Grade_Bucket_levels, y=Agg_WR,group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(-5,100))+labs(title='Fliptop - Percentage of Opportunities Won', x='Stack-ranked Opportunities by Grade (Cumulative)', y='Percentage of Aggregate Opportunities')+geom_text(aes(label=paste(sprintf('%.2f%%',Agg_WR)), y=Agg_WR-3), size=3)
   bucket_conversion$positions = cumsum(bucket_conversion$Bucket_agg_wr) - bucket_conversion$Bucket_agg_wr/2
-  #agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_wr, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+scale_y_continuous(breaks=y.breaks, labels=sprintf('%.2f%%', bucket_conversion$Bucket_agg_wr))+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
+  #agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_wr, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Fliptop - Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+scale_y_continuous(breaks=bucket_conversion$positions, labels=sprintf('%.2f%%', bucket_conversion$Bucket_agg_wr))+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
   agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_wr, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Fliptop - Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+geom_text(aes(label=paste(sprintf('%.2f%%', Bucket_agg_wr)),y=positions))+scale_y_continuous(breaks=c())+scale_fill_manual(values=c('green4','green3','green1','honeydew1'))
   rev_plot = ggplot(bucket_conversion, aes(x=Grade_Bucket_levels, y=Agg_Revenue_Percent, group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='green1')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(-5,100))+labs(title='Aggregate Revenue Percentage by Grade', x='Ranked Opportunities by Grade (Cumulative)', y='Percentage of Aggregate Opportunities')+geom_text(aes(label=paste(sprintf('%.2f%%',Agg_Revenue_Percent)), y=Agg_Revenue_Percent-3), size=3)    
   bucket_conversion$Grade_Bucket_levels <- NULL
@@ -1098,22 +1156,26 @@ competitor_grade_bucket_opps <- function(df, competitor, score_name){
   bucket_conversion[is.na(bucket_conversion)] = 0
   
   max_height = max(bucket_conversion$Win_Rate)
-  if (max_height <= 5){
-    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Opportunity Win Rate'), x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.5),size=4)+scale_y_continuous(breaks=c(0,2.5,5,10,20,30,40,50,60,70,80,90,100), limits=c(0,5))
+  if (max_height <= 0.1){
+    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Opportunity Win Rate'), x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.003),size=4)+scale_y_continuous(breaks=c(0,0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.1,0.11), limits=c(0,0.11))
+  } else if (max_height <= 1){
+    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Opportunity Win Rate'), x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.05),size=4)+scale_y_continuous(breaks=c(0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1,1.1), limits=c(0,1))
+  } else if (max_height <= 5){
+    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Opportunity Win Rate'), x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.05),size=4)+scale_y_continuous(breaks=c(0,2.5,5,10,20,30,40,50,60,70,80,90,100), limits=c(0,5))
   } else if (max_height <= 25){
-    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Opportunity Win Rate'), x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.5),size=4)+scale_y_continuous(breaks=c(0,5,10,15,20,25,30,40,50,60,70,80,90,100), limits=c(0,25))
+    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Opportunity Win Rate'), x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.25),size=4)+scale_y_continuous(breaks=c(0,5,10,15,20,25,30,40,50,60,70,80,90,100), limits=c(0,25))
   } else if (max_height <= 40){
     ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Opportunity Win Rate'), x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.5),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,50))
   } else if (max_height <= 70){
-    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Opportunity Win Rate'), x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.5),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,75))
+    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Opportunity Win Rate'), x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.75),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,75))
   }  else if (max_height <= 100) {
-    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Opportunity Win Rate'), x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.5),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,105))
+    ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Opportunity Win Rate'), x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+1.75),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,105))
   }
   
   #ftop_bucket_graph = ggplot(bucket_conversion, aes(x=Grade_Bucket, y=Win_Rate)) + geom_bar(fill='lemonchiffon3', binwidth=1, stat='identity') + labs(title= paste(competitor, ' - Opportunity Win Rate'), x='Grades - Adjusted for Comparative Analysis', y='Win Percent') + geom_text(aes(label=paste(sprintf('%.2f%%',Win_Rate)), y=Win_Rate+.5),size=4)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(0,30))
   agg_plot = ggplot(bucket_conversion, aes(x=Grade_Bucket_levels, y=Agg_WR,group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='lemonchiffon3')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(-5,100))+labs(title=paste(competitor, ' - Percentage of Opportunities Won'), x='Stack-ranked Opportunities by Grade (Cumulative)', y='Percentage of Aggregate Opportunities')+geom_text(aes(label=paste(sprintf('%.2f%%',Agg_WR)), y=Agg_WR-3), size=3)
   bucket_conversion$positions = cumsum(bucket_conversion$Bucket_agg_wr) - bucket_conversion$Bucket_agg_wr/2
-  #agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_wr, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle('Percentage of Total Converted Leads')+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+scale_y_continuous(breaks=y.breaks, labels=sprintf('%.2f%%', bucket_conversion$Bucket_agg_wr))+scale_fill_manual(values=c('lemonchiffon4','lemonchiffon3','lemonchiffon1','ivory'))
+  #agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_wr, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle(paste(competitor, ' - Percentage of Total Converted Leads'))+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+scale_y_continuous(breaks=bucket_conversion$positions, labels=sprintf('%.2f%%', bucket_conversion$Bucket_agg_wr))+scale_fill_manual(values=c('lemonchiffon4','lemonchiffon3','lemonchiffon1','ivory'))
   agg_pie_chart = ggplot(bucket_conversion, aes(x=factor(1), y=Bucket_agg_wr, fill=Grade_Bucket))+geom_bar(width=1, stat='identity',color='black')+guides(fill=guide_legend(override.aes=list(colour=NA)))+ggtitle(paste(competitor, ' - Percentage of Total Converted Leads'))+coord_polar(theta='y')+theme(axis.text.x=element_text(color='black'),axis.ticks=element_blank(),axis.title=element_blank(),axis.text.y=element_blank())+geom_text(aes(label=paste(sprintf('%.2f%%', Bucket_agg_wr)),y=positions))+scale_y_continuous(breaks=c())+scale_fill_manual(values=c('lemonchiffon4','lemonchiffon3','lemonchiffon1','ivory'))
   rev_plot = ggplot(bucket_conversion, aes(x=Grade_Bucket_levels, y=Agg_Revenue_Percent, group=1))+stat_summary(geom='line')+geom_line(size=1.25, color='lemonchiffon3')+geom_point(colour='black', size=3)+scale_y_continuous(breaks=c(0,10,20,30,40,50,60,70,80,90,100), limits=c(-5,100))+labs(title='Aggregate Revenue Percentage by Grade', x='Ranked Opportunities by Grade (Cumulative)', y='Percentage of Aggregate Opportunities')+geom_text(aes(label=paste(sprintf('%.2f%%',Agg_Revenue_Percent)), y=Agg_Revenue_Percent-3), size=3)    
   bucket_conversion$Grade_Bucket_levels <- NULL
@@ -1137,8 +1199,9 @@ competitor_grade_bucket_opps <- function(df, competitor, score_name){
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-csod_new = read.csv('/Users/fliptop/Desktop/Customer_Stats/CSOD/CSOD_leads_new.csv', stringsAsFactor=F, header=T)
+csod_new = read.csv('/Users/fliptop/Desktop/Customer_Stats/CSOD/csod_leads_new.csv', stringsAsFactor=F, header=T)
 csod_all = read.csv('/Users/fliptop/Desktop/Customer_Stats/CSOD/csod_leads.csv', stringsAsFactor=F, header=T)
+csod_sfdc = read.csv('/Users/fliptop/Desktop/Customer_Stats/CSOD/CSOD_sfdc.csv', stringsAsFactor=F, header=T)
 #all_leads = read.csv('/Users/fliptop/Desktop/Customer_Stats/CSOD/CSOD_leads.csv', stringsAsFactor=F, header=T)
 opps = read.csv('/Users/fliptop/Desktop/Customer_Stats/CSOD/CSOD_opps_new.csv', stringsAsFactor=F, header=T)
 #all_opps = read.csv('/Users/fliptop/Desktop/CSOD/CSOD_opps.csv', stringsAsFactor=F, header=T)
@@ -1157,6 +1220,8 @@ opps_11 = opps[order(-opps$ssv3.11.rscos.1), ]
 leads_decile_partition(csod_all_11)
 leads_decile_partition(csod_new_11)
 opps_decile_partition(opps_11)
+
+
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------  
 smarsh_new = read.csv('/Users/fliptop/Desktop/Customer_Stats/Smarsh/Smarsh_leads_new.csv', stringsAsFactor=F, header=T)
@@ -1310,6 +1375,25 @@ reliant_new_11 = reliant_new[order(-reliant_new$ssv3.11.sco, -reliant_new$ssv3.1
 reliant_opps_1 = reliant_opps[order(-reliant_opps$ssv3.100001.sco, -reliant_opps$ssv3.100001.rscos.1),]
 reliant_opps_11 = reliant_opps[order(-reliant_opps$ssv3.100011.sco, -reliant_opps$ssv3.100011.rscos.1),]
 #data = reliant_new_1
+
+reliant_sfdc = read.csv('/Users/fliptop/Desktop/Customer_Stats/ReliantFunding/reliant_leads_sfdc.csv', stringsAsFactor=F, header=T)
+reliant_leads = read.csv('/Users/fliptop/Desktop/Customer_Stats/ReliantFunding/reliant_leads.csv', stringsAsFactor=F, header=T)
+reliant_new = read.csv('/Users/fliptop/Desktop/Customer_Stats/ReliantFunding/reliant_leads_new.csv', stringsAsFactor=F, header=T)
+
+reliant_sfdc$ISCONVERTED = replace(reliant_sfdc$ISCONVERTED, reliant_sfdc$ISCONVERTED == 'true', 'True')
+reliant_merged = merge(reliant_leads, reliant_sfdc, by.x='rec', by.y='ID')
+reliant_merged_new = merge(reliant_new, reliant_sfdc, by.x='rec', by.y='ID')
+
+reliant_merged = reliant_merged[complete.cases(reliant_merged$FTOP__SPENDGRADE__C), ]
+reliant_merged_new = reliant_merged_new[complete.cases(reliant_merged_new$FTOP__SPENDGRADE__C), ]
+
+reliant_merged = reliant_merged[order(-reliant_merged$ssv3.2.sco, -reliant_merged$ssv3.2.rscos.2, -reliant_merged$ssv3.2.rscos.1), ]
+reliant_merged_new = reliant_merged_new[order(-reliant_merged_new$ssv3.2.sco, -reliant_merged_new$ssv3.2.rscos.2, -reliant_merged_new$ssv3.2.rscos.1), ]
+
+reliant_merged_sfdc = reliant_merged[order(-reliant_merged$FTOP__SPENDSCORE__C), ]
+reliant_merged_new_sfdc = reliant_merged_new[order(-reliant_merged_new$FTOP__SPENDSCORE__C), ]
+
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 gainsight_leads = read.csv('/Users/fliptop/Desktop/Customer_Stats/Gainsight/gainsight_leads.csv', header=T, stringsAsFactor=F)  
 gainsight_opps_closed = read.csv('/Users/fliptop/Desktop/Customer_Stats/Gainsight/gainsight_closed_opps.csv', header=T, stringsAsFactor=F)  
